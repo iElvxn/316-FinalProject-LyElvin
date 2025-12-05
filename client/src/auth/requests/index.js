@@ -48,15 +48,15 @@ export const loginUser = (email, password) => {
     })
 }
 export const logoutUser = () => fetchRequest(`/logout/`, {method: "GET"})
-export const registerUser = (firstName, lastName, email, password, passwordVerify) => {
+export const registerUser = (userName, email, password, passwordVerify, avatar) => {
     return fetchRequest('/register/', {
         method: "POST",
         body: JSON.stringify({
-            firstName,
-            lastName,
+            userName,
             email,
             password,
-            passwordVerify
+            passwordVerify,
+            avatar
         })
     })
 }

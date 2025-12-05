@@ -20,9 +20,9 @@ getLoggedIn = async (req, res) => {
         return res.status(200).json({
             loggedIn: true,
             user: {
-                firstName: loggedInUser.firstName,
-                lastName: loggedInUser.lastName,
-                email: loggedInUser.email
+                userName: loggedInUser.userName,
+                email: loggedInUser.email,
+                avatar: loggedInUser.avatar
             }
         })
     } catch (err) {
@@ -75,9 +75,9 @@ loginUser = async (req, res) => {
         }).status(200).json({
             success: true,
             user: {
-                firstName: existingUser.firstName,
-                lastName: existingUser.lastName,
-                email: existingUser.email
+                userName: existingUser.userName,
+                email: existingUser.email,
+                avatar: existingUser.avatar
             }
         })
 
@@ -99,12 +99,17 @@ logoutUser = async (req, res) => {
 registerUser = async (req, res) => {
     console.log("REGISTERING USER IN BACKEND");
     try {
-        const { firstName, lastName, email, password, passwordVerify } = req.body;
-        console.log("create user: " + firstName + " " + lastName + " " + email + " " + password + " " + passwordVerify);
-        if (!firstName || !lastName || !email || !password || !passwordVerify) {
+        const { userName, email, password, passwordVerify, avatar } = req.body;
+        console.log("create user: " + userName + " " + email + " " + password + " " + passwordVerify);
+        if (!userName || !email || !password || !passwordVerify) {
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
+        }
+        if (userName.trim().length === 0) {
+            return res
+                .status(400)
+                .json({ errorMessage: "User name cannot be empty." });
         }
         console.log("all fields provided");
         if (password.length < 8) {
@@ -140,31 +145,20 @@ registerUser = async (req, res) => {
         const passwordHash = await bcrypt.hash(password, salt);
         console.log("passwordHash: " + passwordHash);
 
-        //const newUser = new User({firstName, lastName, email, passwordHash});
-        //const savedUser = await newUser.save();
-        const savedUser = await DatabaseManager.createUser({ firstName, lastName, email, passwordHash });
+        const savedUser = await DatabaseManager.createUser({
+            userName,
+            email,
+            passwordHash,
+            avatar: avatar || ''
+        });
         const userId = savedUser._id || savedUser.id;
         console.log("new user saved: " + userId);
 
-        // LOGIN THE USER
-        const token = auth.signToken(userId);
-        console.log("token:" + token);
-
-        await res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none"
-        }).status(200).json({
+        // we want to redirect to login screen rather than logging them in
+        return res.status(200).json({
             success: true,
-            user: {
-                firstName: savedUser.firstName,
-                lastName: savedUser.lastName,
-                email: savedUser.email
-            }
+            message: "Account created successfully. Please login."
         })
-
-        console.log("token sent");
-
     } catch (err) {
         console.error(err);
         res.status(500).send();

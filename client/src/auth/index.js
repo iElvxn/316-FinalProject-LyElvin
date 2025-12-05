@@ -74,24 +74,14 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.registerUser = async function(firstName, lastName, email, password, passwordVerify) {
+    auth.registerUser = async function(userName, email, password, passwordVerify, avatar) {
         console.log("REGISTERING USER");
-        try{   
-            const response = await authRequestSender.registerUser(firstName, lastName, email, password, passwordVerify);   
+        try{
+            const response = await authRequestSender.registerUser(userName, email, password, passwordVerify, avatar);
             if (response.status === 200) {
-                console.log("Registered Sucessfully");
-                authReducer({
-                    type: AuthActionType.REGISTER_USER,
-                    payload: {
-                        user: response.data.user,
-                        loggedIn: true,
-                        errorMessage: null
-                    }
-                })
+                console.log("Registered Successfully");
+                //Redirect to login page
                 history.push("/login");
-                console.log("NOW WE LOGIN");
-                auth.loginUser(email, password);
-                console.log("LOGGED IN");
             }
         } catch(error){
             authReducer({
@@ -144,12 +134,16 @@ function AuthContextProvider(props) {
 
     auth.getUserInitials = function() {
         let initials = "";
-        if (auth.user) {
-            initials += auth.user.firstName.charAt(0);
-            initials += auth.user.lastName.charAt(0);
+        if (auth.user && auth.user.userName) {
+            // If theres multiple words then we'll take the first chars in the first two words, otehrwise just the first two chars in username
+            let words = auth.user.userName.trim().split(' ');
+            if (words.length >= 2) { //we have multiple words
+                initials = words[0].charAt(0) + words[1].charAt(0);
+            } else {
+                initials = auth.user.userName.substring(0, 2);
+            }
         }
-        console.log("user initials: " + initials);
-        return initials;
+        return initials.toUpperCase();
     }
 
     return (
