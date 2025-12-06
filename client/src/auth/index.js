@@ -146,6 +146,33 @@ function AuthContextProvider(props) {
         return initials.toUpperCase();
     }
 
+    auth.updateUser = async function(userName, password, passwordVerify, avatar) {
+        console.log("UPDATING USER");
+        try {
+            const response = await authRequestSender.updateUser(userName, password, passwordVerify, avatar);
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.LOGIN_USER,
+                    payload: {
+                        user: response.data.user,
+                        loggedIn:true,
+                        errorMessage: null
+                    }
+                });
+                history.push("/");
+            }
+        } catch (error) {
+            authReducer({
+                type: AuthActionType.LOGIN_USER,
+                payload: {
+                    user: auth.user,
+                    loggedIn: true,
+                    errorMessage: error.response?.data?.errorMessage || "An error occurred. Please try again."
+                }
+            });
+        }
+    }
+
     return (
         <AuthContext.Provider value={{
             auth

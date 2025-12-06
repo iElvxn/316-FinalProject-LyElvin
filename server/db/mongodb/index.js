@@ -49,6 +49,26 @@ class MongoDBManager extends DatabaseManager {
         }
     }
 
+    async updateUser(userId, updateData) {
+        try {
+            const user = await this.User.findById(userId);
+
+            if (updateData.userName) {
+                user.userName = updateData.userName;
+            }
+            if (updateData.passwordHash) {
+                user.passwordHash = updateData.passwordHash;
+            }
+            if (updateData.avatar !== undefined) {
+                user.avatar = updateData.avatar;
+            }
+            return await user.save();
+        } catch (error) {
+            console.error('Error updating user:', error);
+            throw error;
+        }
+    }
+
     async createPlaylist(playlistData, userID) {
         try {
             const playlist = new Playlist(playlistData);

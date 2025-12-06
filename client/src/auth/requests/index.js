@@ -60,11 +60,23 @@ export const registerUser = (userName, email, password, passwordVerify, avatar) 
         })
     })
 }
+export const updateUser = (userName, password, passwordVerify, avatar) => {
+    return fetchRequest('/update/', {
+        method: "PUT",
+        body: JSON.stringify({
+            userName,
+            password,
+            passwordVerify,
+            avatar
+        })
+    })
+}
 const apis = {
     getLoggedIn,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    updateUser
 }
 
 export default apis

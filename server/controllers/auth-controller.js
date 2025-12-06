@@ -165,9 +165,73 @@ registerUser = async (req, res) => {
     }
 }
 
+updateUser = async (req, res) => {
+    try {
+        let userId = auth.verifyUser(req);
+        if (!userId) {
+            return res.status(401).json({ errorMessage: "Unauthorized" });
+        }
+
+        const { userName, password, passwordVerify, avatar } = req.body;
+
+        // Validate userName
+        if (!userName || userName.trim().length === 0) {
+            return res.status(400).json({ errorMessage: "User name cannot be empty." });
+        }
+
+        let passwordHash = null;
+        if (password || passwordVerify) {
+            if (password.length < 8) {
+                return res
+                    .status(400)
+                    .json({
+                        errorMessage: "Please enter a password of at least 8 characters."
+                    });
+            }
+            console.log("password long enough");
+            if (password !== passwordVerify) {
+                return res
+                    .status(400)
+                    .json({
+                        errorMessage: "Please enter the same password twice."
+                    })
+            }
+            const saltRounds = 10;
+            const salt = await bcrypt.genSalt(saltRounds);
+            passwordHash = await bcrypt.hash(password, salt);
+        }
+
+        const updateData = { userName };
+        if (passwordHash) { //user is updating the password
+            updateData.passwordHash = passwordHash;
+        }
+
+        if (avatar !== undefined) { //user is updating the avatar
+            updateData.avatar = avatar;
+        }
+
+        const updatedUser = await DatabaseManager.updateUser(userId, updateData);
+
+        return res.status(200).json({
+            success: true,
+            user: {
+                userName: updatedUser.userName,
+                email: updatedUser.email,
+                avatar: updatedUser.avatar
+            },
+            message: "Account updated successfully."
+
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send();
+    }
+}
+
 module.exports = {
     getLoggedIn,
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    updateUser
 }
