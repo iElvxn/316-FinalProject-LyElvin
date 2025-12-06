@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import AuthContext from '../auth'
 import MUIErrorModal from './MUIErrorModal'
 import Copyright from './Copyright'
@@ -16,6 +16,21 @@ import Typography from '@mui/material/Typography';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
+    const [avatar, setAvatar] = useState('');
+    const [avatarPreview, setAvatarPreview] = useState(null);
+
+    const handleAvatarSubmit = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64Img = reader.result
+                setAvatar(base64Img);
+                setAvatarPreview(base64Img);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -25,7 +40,7 @@ export default function RegisterScreen() {
             formData.get('email'),
             formData.get('password'),
             formData.get('passwordVerify'),
-            '' // avatar - empty for now
+            avatar
         );
     };
 
@@ -47,8 +62,10 @@ export default function RegisterScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
+                    <Avatar
+                        sx={{ m: 1, bgcolor: 'secondary.main', width: 64, height: 64 }}
+                        src={avatarPreview}
+                    >{!avatarPreview && <LockOutlinedIcon />}
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign up
@@ -97,6 +114,21 @@ export default function RegisterScreen() {
                                     id="passwordVerify"
                                     autoComplete="new-password"
                                 />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    fullWidth
+                                >
+                                    Upload Avatar
+                                    <input
+                                        type="file"
+                                        hidden
+                                        accept="image/*"
+                                        onChange={handleAvatarSubmit}
+                                    />
+                                </Button>
                             </Grid>
                         </Grid>
                         <Button
