@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import AuthContext from '../auth'
 import Box from '@mui/material/Box';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
@@ -66,24 +67,35 @@ function PlaylistCard(props) {
         setText(event.target.value);
     }
 
+    function handleCopyPlaylist(event) {
+        event.stopPropagation();
+        store.copyPlaylist(idNamePair._id);
+    }
+
     let cardElement =
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
-            sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', /*p: 1*/ }}
-            style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
+            sx={{ borderRadius: "25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', /*p: 1*/ }}
+            style={{ transform: "translate(1%,0%)", width: '98%', fontSize: '48pt' }}
         >
             <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
             {!auth.isGuest && <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{fontSize:'48pt'}} />
+                    <EditIcon style={{ fontSize: '48pt' }} />
                 </IconButton>
             </Box>}
             {!auth.isGuest && <Box sx={{ p: 1 }}>
+                <IconButton onClick={handleCopyPlaylist} aria-label='edit'>
+                    <ContentCopyIcon style={{ fontSize: '48pt' }} />
+                </IconButton>
+            </Box>
+            }
+            {!auth.isGuest && <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
-                    <DeleteIcon style={{fontSize:'48pt'}} />
+                    handleDeleteList(event, idNamePair._id)
+                }} aria-label='delete'>
+                    <DeleteIcon style={{ fontSize: '48pt' }} />
                 </IconButton>
             </Box>}
         </ListItem>
@@ -102,8 +114,8 @@ function PlaylistCard(props) {
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
                 defaultValue={idNamePair.name}
-                inputProps={{style: {fontSize: 48}}}
-                InputLabelProps={{style: {fontSize: 24}}}
+                inputProps={{ style: { fontSize: 48 } }}
+                InputLabelProps={{ style: { fontSize: 24 } }}
                 autoFocus
             />
     }

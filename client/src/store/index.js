@@ -362,6 +362,31 @@ function GlobalStoreContextProvider(props) {
         store.hideModals();
 
     }
+
+    store.copyPlaylist = async function (playlistId) {
+        const response = await storeRequestSender.getPlaylistById(playlistId);
+        if (response.data.success) {
+            let ogPlaylist = response.data.playlist;
+
+            //  Deep copy of the sonags
+            let songsCopy = ogPlaylist.songs.map(song => ({
+                title: song.title,
+                artist: song.artist,
+                year: song.year,
+                youTubeId: song.youTubeId
+            }));
+
+            let copyName = "Copy of " + ogPlaylist.name;
+            await storeRequestSender.createPlaylist(
+                copyName,
+                songsCopy,
+                auth.user.email
+            );
+            store.loadIdNamePairs();
+
+        }
+    }
+
     // THIS FUNCTION SHOWS THE MODAL FOR PROMPTING THE USER
     // TO SEE IF THEY REALLY WANT TO DELETE THE LIST
 
