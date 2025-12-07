@@ -11,6 +11,10 @@ import List from '@mui/material/List';
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 import AuthContext from '../auth/index.js';
 /*
@@ -28,6 +32,8 @@ const HomeScreen = () => {
         songArtist: '',
         songYear: ''
     });
+
+    const [sortBy, setSortBy] = useState('name-asc');
 
     useEffect(() => {
         store.loadIdNamePairs();
@@ -58,6 +64,11 @@ const HomeScreen = () => {
         }
     }
 
+    function handleSortChange(event) {
+        setSortBy(event.target.value);
+        store.loadIdNamePairs(searchQuery, event.target.value);
+    }
+
     let listCard = "";
     if (store) {
         listCard =
@@ -79,7 +90,7 @@ const HomeScreen = () => {
                 Your Playlists
             </div>
 
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, height: '100%'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, height: '100%' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', width: "50%" }}>
                     <TextField label="by Playlist Name" size="small" value={searchQuery.name}
                         onChange={handleQueryChange('name')} onKeyDown={handleKeyPress} />
@@ -95,6 +106,17 @@ const HomeScreen = () => {
                     <Button variant="outlined" onClick={handleClear}>Clear</Button>
                 </Box>
                 <Box sx={{ bgcolor: "background.paper", flexGrow: 1 }} id="list-selector-list">
+                    <FormControl size="small" sx={{mt: 1 }}>
+                        <InputLabel>Sort By</InputLabel>
+                        <Select value={sortBy} label="Sort By" onChange={handleSortChange}>
+                            <MenuItem value="name-asc">Name (A-Z)</MenuItem>
+                            <MenuItem value="name-desc">Name (Z-A)</MenuItem>
+                            <MenuItem value="listenerCount-desc">Listeners (Hi-Lo)</MenuItem>
+                            <MenuItem value="listenerCount-asc">Listeners (Lo-Hi)</MenuItem>
+                            <MenuItem value="ownerUsername-asc">User (A-Z)</MenuItem>
+                            <MenuItem value="ownerUsername-desc">User (Z-A)</MenuItem>
+                        </Select>
+                    </FormControl>
                     {
                         listCard
                     }

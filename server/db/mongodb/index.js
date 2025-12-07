@@ -173,9 +173,21 @@ class MongoDBManager extends DatabaseManager {
             if (query.songYear) {
                 filter['songs.year'] = parseInt(query.songYear);
             }
+            let sortOption = { name: 1 };
+            if (query.sortBy === 'name-desc') {
+                sortOption = { name: -1 };
+            } else if (query.sortBy === 'listenerCount-desc') {
+                sortOption = { listenerCount: -1 };
+            } else if (query.sortBy === 'listenerCount-asc') {
+                sortOption = { listenerCount: 1 };
+            } else if (query.sortBy === 'ownerUsername-asc') {
+                sortOption = { ownerUsername: 1 };
+            } else if (query.sortBy === 'ownerUsername-desc') {
+                sortOption = { ownerUsername: -1 };
+            }
 
             console.log("Filter:", filter)
-            const playlists = await Playlist.find(filter);
+            const playlists = await Playlist.find(filter).sort(sortOption);
             console.log("found Playlists: " + JSON.stringify(playlists));
 
             if (!playlists) {
@@ -254,7 +266,20 @@ class MongoDBManager extends DatabaseManager {
         if (query.songYear) {
             filter['songs.year'] = parseInt(query.songYear);
         }
-        const playlists = await Playlist.find(filter)
+        let sortOption = { name: 1 };
+        if (query.sortBy === 'name-desc') {
+            sortOption = { name: -1 };
+        } else if (query.sortBy === 'listenerCount-desc') {
+            sortOption = { listenerCount: -1 };
+        } else if (query.sortBy === 'listenerCount-asc') {
+            sortOption = { listenerCount: 1 };
+        } else if (query.sortBy === 'ownerUsername-asc') {
+            sortOption = { ownerUsername: 1 };
+        } else if (query.sortBy === 'ownerUsername-desc') {
+            sortOption = { ownerUsername: -1 };
+        }
+
+        const playlists = await Playlist.find(filter).sort(sortOption)
         if (!playlists.length) {
             return { success: false, error: `Playlists not found` }
         }

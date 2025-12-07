@@ -52,8 +52,8 @@ export const createPlaylist = (newListName, newSongs, userEmail, ownerUsername) 
 }
 export const deletePlaylistById = (id) => fetchRequest(`/playlist/${id}`, { method: "DELETE" })
 export const getPlaylistById = (id) => fetchRequest(`/playlist/${id}`, { method: "GET" })
-export const getPlaylistPairs = (query = {}) => {
-    const params = new URLSearchParams(query).toString();
+export const getPlaylistPairs = (query = {}, sortBy = 'name-asc') => {
+    const params = new URLSearchParams({ ...query, sortBy }).toString();
     let url = '/playlistpairs'
     if (params) {
         url = `/playlistpairs?${params}`

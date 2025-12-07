@@ -313,9 +313,9 @@ function GlobalStoreContextProvider(props) {
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
-    store.loadIdNamePairs = function (query = {}) {
+    store.loadIdNamePairs = function (query = {}, sortBy = 'name') {
         async function asyncLoadIdNamePairs() {
-            const response = await storeRequestSender.getPlaylistPairs(query);
+            const response = await storeRequestSender.getPlaylistPairs(query, sortBy);
             if (response.data.success) {
                 let pairsArray = response.data.idNamePairs;
                 console.log(pairsArray);
