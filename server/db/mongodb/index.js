@@ -161,6 +161,9 @@ class MongoDBManager extends DatabaseManager {
             if (query.name) {
                 filter.name = { $regex: query.name, $options: 'i' };
             }
+            if (query.user) {
+                filter.ownerUsername = { $regex: query.user, $options: 'i' };
+            }
             if (query.songTitle) {
                 filter['songs.title'] = { $regex: query.songTitle, $options: 'i' };
             }
@@ -238,6 +241,9 @@ class MongoDBManager extends DatabaseManager {
         //build our filter. use regex and make case insensitive to find close matches
         if (query.name) {
             filter.name = { $regex: query.name, $options: 'i' };
+        }
+        if (query.user) {
+            filter.ownerUsername = { $regex: query.user, $options: 'i' };
         }
         if (query.songTitle) {
             filter['songs.title'] = { $regex: query.songTitle, $options: 'i' };

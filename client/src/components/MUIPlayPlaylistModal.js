@@ -114,7 +114,7 @@ export default function MUIPlayPlaylistModal() {
                             {store.currentList.name}
                         </Typography>
                         <Typography sx={{ fontWeight: 'bold', mb: 2, fontSize: '16px' }}>
-                            by: {store.currentList.ownerEmail}
+                            by: {store.currentList.ownerUsername}
                         </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
