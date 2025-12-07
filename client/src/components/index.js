@@ -11,6 +11,7 @@ import MUIErrorModal from './MUIErrorModal'
 //import MUIRemoveSongModal from './MUIRemoveSongModal'
 import RegisterScreen from './RegisterScreen'
 import SongCard from './SongCard'
+import SongCatalogScreen from './SongCatalogScreen'
 import SplashScreen from './SplashScreen'
 import Statusbar from './Statusbar'
 import WorkspaceScreen from './WorkspaceScreen'
@@ -25,16 +26,17 @@ export {
     EditToolbar,
     HomeScreen,
     HomeWrapper,
-    ListCard, 
+    ListCard,
     LoginScreen,
     MUIDeleteModal,
     MUIEditSongModal,
     MUIErrorModal,
     //MUIRemoveSongModal,
     SongCard,
+    SongCatalogScreen,
     RegisterScreen,
     SplashScreen,
-    Statusbar, 
+    Statusbar,
     WorkspaceScreen,
     EditAccountScreen
  }

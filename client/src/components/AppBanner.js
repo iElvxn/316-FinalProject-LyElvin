@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
 
@@ -9,6 +9,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,6 +21,7 @@ export default function AppBanner() {
     const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
+    const history = useHistory();
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -35,7 +37,12 @@ export default function AppBanner() {
     }
 
     const handleHouseClick = () => {
-        store.closeCurrentList();
+        console.log("house click")
+        if (auth.isGuest) {
+            auth.logoutUser();
+        } else {
+            store.closeCurrentList();
+        }
     }
 
     const menuId = 'primary-search-account-menu';
@@ -100,19 +107,29 @@ export default function AppBanner() {
     }
 
     return (
-        <Box sx={{flexGrow: 1}}>
+        <Box sx={{ flexGrow: 1, position: 'relative', zIndex: 1100 }}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography                        
+                    <Typography
                         variant="h4"
                         noWrap
                         component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}                        
+                        sx={{ display: { xs: 'none', sm: 'block' } }}
                     >
                         <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
                     </Typography>
+                    {(auth.isGuest || auth.loggedIn) &&
+                        <Button color="inherit" sx={{ ml: 3 }} onClick={() => { store.closeCurrentList(); }}>
+                            Playlists
+                        </Button>
+                    }
+                    {(auth.isGuest || auth.loggedIn) &&
+                        <Button color="inherit" sx={{ ml: 2 }} onClick={() => { history.push('/songs'); }}>
+                            Song Catalog
+                        </Button>
+                    }
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
-                    <Box sx={{ height: "90px", display: { xs: 'none', md: 'flex' } }}>
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
                         <IconButton
                             size="large"
                             edge="end"
@@ -122,7 +139,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            { getAccountMenu(auth.loggedIn) }
+                            {getAccountMenu(auth.loggedIn)}
                         </IconButton>
                     </Box>
                 </Toolbar>
