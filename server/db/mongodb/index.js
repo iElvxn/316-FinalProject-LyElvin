@@ -128,19 +128,20 @@ class MongoDBManager extends DatabaseManager {
 
             console.log("Found list: " + JSON.stringify(playlist));
 
-            // Verify ownership
-            const user = await User.findOne({ email: playlist.ownerEmail });
+            // Verify ownership if not guest
+            if (userID) {
+                const user = await User.findOne({ email: playlist.ownerEmail });
 
-            console.log("user._id: " + user._id);
-            console.log("userID: " + userID);
-
-            if (user._id.toString() === userID.toString()) {
-                console.log("correct user!");
-                return playlist.toObject();
-            } else {
-                console.log("incorrect user!");
-                throw new Error('authentication error');
+                if (user._id.toString() === userID.toString()) {
+                    console.log("correct user!");
+                    return playlist.toObject();
+                } else {
+                    console.log("incorrect user!");
+                    throw new Error('authentication error');
+                }
             }
+            return playlist.toObject();
+
         } catch (err) {
             console.error(err);
             throw err;

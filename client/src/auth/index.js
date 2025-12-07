@@ -10,13 +10,15 @@ export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
     LOGIN_USER: "LOGIN_USER",
     LOGOUT_USER: "LOGOUT_USER",
-    REGISTER_USER: "REGISTER_USER"
+    REGISTER_USER: "REGISTER_USER",
+    SET_GUEST_MODE: "SET_GUEST_MODE"
 }
 
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
         loggedIn: false,
+        isGuest: false,
         errorMessage: null
     });
     const history = useHistory();
@@ -32,6 +34,7 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: payload.user,
                     loggedIn: payload.loggedIn,
+                    isGuest: false,
                     errorMessage: null
                 });
             }
@@ -39,6 +42,7 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: payload.user,
                     loggedIn: payload.loggedIn,
+                    isGuest: false,
                     errorMessage: payload.errorMessage
                 })
             }
@@ -46,6 +50,7 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: null,
                     loggedIn: false,
+                    isGuest: false,
                     errorMessage: null
                 })
             }
@@ -53,7 +58,16 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: payload.user,
                     loggedIn: payload.loggedIn,
+                    isGuest: false,
                     errorMessage: payload.errorMessage
+                })
+            }
+            case AuthActionType.SET_GUEST_MODE: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    isGuest: true,
+                    errorMessage: null
                 })
             }
             default:
@@ -74,16 +88,16 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.registerUser = async function(userName, email, password, passwordVerify, avatar) {
+    auth.registerUser = async function (userName, email, password, passwordVerify, avatar) {
         console.log("REGISTERING USER");
-        try{
+        try {
             const response = await authRequestSender.registerUser(userName, email, password, passwordVerify, avatar);
             if (response.status === 200) {
                 console.log("Registered Successfully");
                 //Redirect to login page
                 history.push("/login");
             }
-        } catch(error){
+        } catch (error) {
             authReducer({
                 type: AuthActionType.REGISTER_USER,
                 payload: {
@@ -95,8 +109,8 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.loginUser = async function(email, password) {
-        try{
+    auth.loginUser = async function (email, password) {
+        try {
             const response = await authRequestSender.loginUser(email, password);
             if (response.status === 200) {
                 authReducer({
@@ -109,7 +123,7 @@ function AuthContextProvider(props) {
                 })
                 history.push("/");
             }
-        } catch(error){
+        } catch (error) {
             authReducer({
                 type: AuthActionType.LOGIN_USER,
                 payload: {
@@ -121,10 +135,10 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.logoutUser = async function() {
+    auth.logoutUser = async function () {
         const response = await authRequestSender.logoutUser();
         if (response.status === 200) {
-            authReducer( {
+            authReducer({
                 type: AuthActionType.LOGOUT_USER,
                 payload: null
             })
@@ -132,7 +146,7 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.getUserInitials = function() {
+    auth.getUserInitials = function () {
         let initials = "";
         if (auth.user && auth.user.userName) {
             // If theres multiple words then we'll take the first chars in the first two words, otehrwise just the first two chars in username
@@ -146,7 +160,7 @@ function AuthContextProvider(props) {
         return initials.toUpperCase();
     }
 
-    auth.updateUser = async function(userName, password, passwordVerify, avatar) {
+    auth.updateUser = async function (userName, password, passwordVerify, avatar) {
         console.log("UPDATING USER");
         try {
             const response = await authRequestSender.updateUser(userName, password, passwordVerify, avatar);
@@ -155,7 +169,7 @@ function AuthContextProvider(props) {
                     type: AuthActionType.LOGIN_USER,
                     payload: {
                         user: response.data.user,
-                        loggedIn:true,
+                        loggedIn: true,
                         errorMessage: null
                     }
                 });
@@ -171,6 +185,14 @@ function AuthContextProvider(props) {
                 }
             });
         }
+    }
+
+    auth.setGuestMode = async function () {
+        authReducer({
+            type: AuthActionType.SET_GUEST_MODE,
+            payload: null
+        });
+        history.push("/");
     }
 
     return (

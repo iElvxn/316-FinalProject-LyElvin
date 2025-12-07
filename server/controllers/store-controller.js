@@ -1,5 +1,5 @@
 const auth = require('../auth/index.js')
-const {DatabaseManager} = require('../db/index.js');
+const { DatabaseManager } = require('../db/index.js');
 /*
     This is our back-end API. It provides all the data services
     our database needs. Note that this file contains the controller
@@ -59,15 +59,16 @@ deletePlaylist = async (req, res) => {
     }
 }
 getPlaylistById = async (req, res) => {
-    if (auth.verifyUser(req) === null) {
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
-    }
     console.log("Find Playlist with id: " + JSON.stringify(req.params.id));
+    let userId = auth.verifyUser(req)
+    let playlist;
 
     try {
-        const playlist = await DatabaseManager.getPlaylistById(req.params.id, req.userId);
+        if (userId) {
+            playlist = await DatabaseManager.getPlaylistById(req.params.id, req.userId);
+        } else {
+            playlist = await DatabaseManager.getPlaylistById(req.params.id)
+        }
         return res.status(200).json({ success: true, playlist: playlist })
     } catch (error) {
         return res.status(400).json({
@@ -76,15 +77,18 @@ getPlaylistById = async (req, res) => {
     }
 }
 getPlaylistPairs = async (req, res) => {
-    if (auth.verifyUser(req) === null) {
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
-    }
     console.log("getPlaylistPairs");
+    let userId = auth.verifyUser(req)
+    let playlists;
+
     try {
-        const playlists = await DatabaseManager.getPlaylistPairs(req.userId);
+        if (userId) {
+            playlists = await DatabaseManager.getPlaylistPairs(userId);
+        } else { // we are a guest, so we want to get every playlist
+            playlists = await DatabaseManager.getPlaylists();
+        }
         return res.status(200).json({ success: true, idNamePairs: playlists })
+
     } catch (error) {
         return res.status(400).json({
             errorMessage: "authentication error"
@@ -104,7 +108,7 @@ getPlaylists = async (req, res) => {
         console.log(error)
         throw error
     }
-    
+
 }
 updatePlaylist = async (req, res) => {
     if (auth.verifyUser(req) === null) {

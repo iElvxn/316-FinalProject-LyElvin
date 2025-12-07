@@ -1,9 +1,11 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth'
 import Button from '@mui/material/Button';
 
 function SongCard(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const { song, index } = props;
 
     function handleDragStart(event) {
@@ -34,6 +36,7 @@ function SongCard(props) {
         store.addRemoveSongTransaction(song, index);
     }
     function handleClick(event) {
+        if (auth.isGuest) return;  // Guests can't edit
         // DOUBLE CLICK IS FOR SONG EDITING
         if (event.detail === 2) {
             console.log("double clicked");
@@ -52,7 +55,7 @@ function SongCard(props) {
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            draggable="true"
+            draggable={!auth.isGuest}
             onClick={handleClick}
         >
             {index + 1}.
@@ -62,12 +65,12 @@ function SongCard(props) {
                 href={"https://www.youtube.com/watch?v=" + song.youTubeId}>
                 {song.title} ({song.year}) by {song.artist}
             </a>
-            <Button
+            {!auth.isGuest && <Button
                 sx={{transform:"translate(-5%, -5%)", width:"5px", height:"30px"}}
                 variant="contained"
                 id={"remove-song-" + index}
                 className="list-card-button"
-                onClick={handleRemoveSong}>{"\u2715"}</Button>
+                onClick={handleRemoveSong}>{"\u2715"}</Button>}
         </div>
     );
 }
