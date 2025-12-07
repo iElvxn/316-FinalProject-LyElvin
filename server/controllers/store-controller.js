@@ -83,9 +83,9 @@ getPlaylistPairs = async (req, res) => {
 
     try {
         if (userId) {
-            playlists = await DatabaseManager.getPlaylistPairs(userId);
+            playlists = await DatabaseManager.getPlaylistPairs(userId, req.query);
         } else { // we are a guest, so we want to get every playlist
-            playlists = await DatabaseManager.getPlaylists();
+            playlists = await DatabaseManager.getPlaylists(req.query);
         }
         return res.status(200).json({ success: true, idNamePairs: playlists })
 

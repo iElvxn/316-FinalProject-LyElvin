@@ -49,14 +49,21 @@ export const createPlaylist = (newListName, newSongs, userEmail) => {
         })
     })
 }
-export const deletePlaylistById = (id) => fetchRequest(`/playlist/${id}`, {method: "DELETE"})
-export const getPlaylistById = (id) => fetchRequest(`/playlist/${id}`, {method: "GET"})
-export const getPlaylistPairs = () => fetchRequest(`/playlistpairs/`, {method: "GET"})
+export const deletePlaylistById = (id) => fetchRequest(`/playlist/${id}`, { method: "DELETE" })
+export const getPlaylistById = (id) => fetchRequest(`/playlist/${id}`, { method: "GET" })
+export const getPlaylistPairs = (query = {}) => {
+    const params = new URLSearchParams(query).toString();
+    let url = '/playlistpairs'
+    if (params) {
+        url = `/playlistpairs?${params}`
+    }
+    return fetchRequest(url);
+}
 export const updatePlaylistById = (id, playlist) => {
     return fetchRequest(`/playlist/${id}`, {
         method: "PUT",
         body: JSON.stringify({
-            playlist : playlist
+            playlist: playlist
         })
     })
 }

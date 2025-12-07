@@ -148,13 +148,31 @@ class MongoDBManager extends DatabaseManager {
         }
     }
 
-    async getPlaylistPairs(userID) {
+    async getPlaylistPairs(userID, query) {
         try {
             console.log("find user with id " + userID);
             const user = await User.findOne({ _id: userID })
 
             console.log("find all Playlists owned by " + user.email);
-            const playlists = await Playlist.find({ ownerEmail: user.email });
+
+            let filter = { ownerEmail: user.email }
+
+            //build our filter. use regex and make case insensitive to find close matches
+            if (query.name) {
+                filter.name = { $regex: query.name, $options: 'i' };
+            }
+            if (query.songTitle) {
+                filter['songs.title'] = { $regex: query.songTitle, $options: 'i' };
+            }
+            if (query.songArtist) {
+                filter['songs.artist'] = { $regex: query.songArtist, $options: 'i' };
+            }
+            if (query.songYear) {
+                filter['songs.year'] = parseInt(query.songYear);
+            }
+
+            console.log("Filter:", filter)
+            const playlists = await Playlist.find(filter);
             console.log("found Playlists: " + JSON.stringify(playlists));
 
             if (!playlists) {
@@ -214,8 +232,23 @@ class MongoDBManager extends DatabaseManager {
         }
     }
 
-    async getPlaylists() {
-        const playlists = await Playlist.find({})
+    async getPlaylists(query) {
+        let filter = {}
+
+        //build our filter. use regex and make case insensitive to find close matches
+        if (query.name) {
+            filter.name = { $regex: query.name, $options: 'i' };
+        }
+        if (query.songTitle) {
+            filter['songs.title'] = { $regex: query.songTitle, $options: 'i' };
+        }
+        if (query.songArtist) {
+            filter['songs.artist'] = { $regex: query.songArtist, $options: 'i' };
+        }
+        if (query.songYear) {
+            filter['songs.year'] = parseInt(query.songYear);
+        }
+        const playlists = await Playlist.find(filter)
         if (!playlists.length) {
             return { success: false, error: `Playlists not found` }
         }
