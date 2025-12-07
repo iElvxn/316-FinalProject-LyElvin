@@ -141,11 +141,25 @@ updatePlaylist = async (req, res) => {
     }
 
 }
+incrementListener = async (req, res) => {
+    const body = req.body;
+    if (!body.userEmail) {
+        return res.status(400).json({ errorMessage: 'User email required' });
+    }
+    try {
+        const playlist = await DatabaseManager.incrementListener(req.params.id, body.userEmail);
+        return res.status(200).json({ success: true, playlist: playlist });
+    } catch (error) {
+        return res.status(400).json({ errorMessage: error.message });
+    }
+}
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
     getPlaylistById,
     getPlaylistPairs,
     getPlaylists,
-    updatePlaylist
+    updatePlaylist,
+    incrementListener
 }

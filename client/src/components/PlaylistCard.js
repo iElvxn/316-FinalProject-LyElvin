@@ -85,7 +85,10 @@ function PlaylistCard(props) {
             sx={{ borderRadius: "25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', /*p: 1*/ }}
             style={{ transform: "translate(1%,0%)", width: '98%', fontSize: '48pt' }}
         >
-            <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+            <Box sx={{ p: 1, flexGrow: 1 }}>
+                <Box>{idNamePair.name}</Box>
+                <Box sx={{ fontSize: '14pt', color: '#666' }}>{idNamePair.listenerCount || 0} Listeners</Box>
+            </Box>
             {!auth.isGuest && <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
                     <EditIcon style={{ fontSize: '48pt' }} />

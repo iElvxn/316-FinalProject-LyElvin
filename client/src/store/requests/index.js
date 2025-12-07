@@ -61,12 +61,20 @@ export const updatePlaylistById = (id, playlist) => {
     })
 }
 
+export const incrementListener = (id, userEmail) => {
+    return fetchRequest(`/playlist/${id}/listen`, {
+        method: "POST",
+        body: JSON.stringify({ userEmail })
+    })
+}
+
 const apis = {
     createPlaylist,
     deletePlaylistById,
     getPlaylistById,
     getPlaylistPairs,
-    updatePlaylistById
+    updatePlaylistById,
+    incrementListener
 }
 
 export default apis

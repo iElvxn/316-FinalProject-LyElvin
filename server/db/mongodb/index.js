@@ -169,7 +169,8 @@ class MongoDBManager extends DatabaseManager {
                     let list = playlists[key];
                     let pair = {
                         _id: list._id,
-                        name: list.name
+                        name: list.name,
+                        listenerCount: list.listenerCount || 0
                     };
                     pairs.push(pair);
                 }
@@ -219,6 +220,24 @@ class MongoDBManager extends DatabaseManager {
             return { success: false, error: `Playlists not found` }
         }
         return playlists.map(playlist => playlist.toObject())
+    }
+
+    async incrementListener(playlistID, userEmail) {
+        try {
+            const playlist = await Playlist.findById(playlistID);
+            if (!playlist) {
+                throw new Error('Playlist not found');
+            }
+            if (!playlist.listenedBy.includes(userEmail)) { //if not listened to the opalyist before
+                playlist.listenedBy.push(userEmail);
+                playlist.listenerCount = playlist.listenedBy.length;
+                await playlist.save();
+            }
+            return playlist.toObject();
+        } catch (error) {
+            console.error(error)
+            throw error;
+        }
     }
 }
 const dbManager = new MongoDBManager();

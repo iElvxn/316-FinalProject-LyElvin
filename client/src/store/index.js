@@ -465,6 +465,10 @@ function GlobalStoreContextProvider(props) {
             let response = await storeRequestSender.getPlaylistById(playlistId);
             if (response.data.success) {
                 let playlist = response.data.playlist;
+                // Increment listener count
+                const userEmail = auth.user?.email || 'guest';
+                await storeRequestSender.incrementListener(playlistId, userEmail);
+
                 setStore({
                     currentModal: CurrentModal.PLAY_PLAYLIST,
                     idNamePairs: store.idNamePairs,
