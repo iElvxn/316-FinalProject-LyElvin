@@ -203,7 +203,8 @@ class MongoDBManager extends DatabaseManager {
                     let pair = {
                         _id: list._id,
                         name: list.name,
-                        listenerCount: list.listenerCount || 0
+                        listenerCount: list.listenerCount || 0,
+                        ownerUsername: list.ownerUsername
                     };
                     pairs.push(pair);
                 }

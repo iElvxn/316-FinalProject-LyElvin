@@ -87,6 +87,7 @@ function PlaylistCard(props) {
         >
             <Box sx={{ p: 1, flexGrow: 1 }}>
                 <Box>{idNamePair.name}</Box>
+                <Box sx={{ fontSize: '14pt', color: '#666' }}>by: {idNamePair.ownerUsername}</Box>
                 <Box sx={{ fontSize: '14pt', color: '#666' }}>{idNamePair.listenerCount || 0} Listeners</Box>
             </Box>
             {!auth.isGuest && <Box sx={{ p: 1 }}>
