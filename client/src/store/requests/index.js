@@ -76,13 +76,23 @@ export const incrementListener = (id, userEmail) => {
     })
 }
 
+export const getSongs = (query = {}, sortBy = 'title-asc') => {
+    const params = new URLSearchParams({ ...query, sortBy }).toString();
+    let url = '/songs'
+    if (params) {
+        url = `/songs?${params}`
+    }
+    return fetchRequest(url);
+}
+
 const apis = {
     createPlaylist,
     deletePlaylistById,
     getPlaylistById,
     getPlaylistPairs,
     updatePlaylistById,
-    incrementListener
+    incrementListener,
+    getSongs
 }
 
 export default apis

@@ -154,6 +154,15 @@ incrementListener = async (req, res) => {
     }
 }
 
+getSongs = async (req, res) => {
+    try {
+        const songs = await DatabaseManager.getSongs(req.query);
+        return res.status(200).json({ success: true, songs: songs });
+    } catch (error) {
+        return res.status(400).json({ errorMessage: error.message });
+    }
+}
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
@@ -161,5 +170,6 @@ module.exports = {
     getPlaylistPairs,
     getPlaylists,
     updatePlaylist,
-    incrementListener
+    incrementListener,
+    getSongs
 }

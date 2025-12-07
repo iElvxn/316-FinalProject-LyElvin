@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 const DatabaseManager = require('../DatabaseManager');
 const User = require('../../models/user-model');
 const Playlist = require('../../models/playlist-model');
+const Song = require('../../models/song-model');
 
 class MongoDBManager extends DatabaseManager {
     constructor() {
         super();
         this.User = User;
         this.Playlist = Playlist;
+        this.Song = Song;
     }
 
     async connect() {
@@ -303,6 +305,45 @@ class MongoDBManager extends DatabaseManager {
             console.error(error)
             throw error;
         }
+    }
+
+    async getSongs(query) {
+        let filter = {};
+
+        //same qyuery system as playlists
+        if (query.title) {
+            filter.title = { $regex: query.title, $options: 'i' };
+        }
+        if (query.artist) {
+            filter.artist = { $regex: query.artist, $options: 'i' };
+        }
+        if (query.year) {
+            filter.year = parseInt(query.year);
+        }
+
+        let sortOption = { title: 1 };
+        if (query.sortBy === 'title-desc') {
+            sortOption = { title: -1 };
+        } else if (query.sortBy === 'artist-asc') {
+            sortOption = { artist: 1 };
+        } else if (query.sortBy === 'artist-desc') {
+            sortOption = { artist: -1 };
+        } else if (query.sortBy === 'year-asc') {
+            sortOption = { year: 1 };
+        } else if (query.sortBy === 'year-desc') {
+            sortOption = { year: -1 };
+        } else if (query.sortBy === 'listenCount-desc') {
+            sortOption = { listenCount: -1 };
+        } else if (query.sortBy === 'listenCount-asc') {
+            sortOption = { listenCount: 1 };
+        } else if (query.sortBy === 'playlistCount-desc') {
+            sortOption = { playlistCount: -1 };
+        } else if (query.sortBy === 'playlistCount-asc') {
+            sortOption = { playlistCount: 1 };
+        }
+
+        const songs = await Song.find(filter).sort(sortOption);
+        return songs.map(song => song.toObject());
     }
 }
 const dbManager = new MongoDBManager();
