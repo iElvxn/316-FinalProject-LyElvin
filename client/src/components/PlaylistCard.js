@@ -6,6 +6,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 
@@ -72,6 +73,11 @@ function PlaylistCard(props) {
         store.copyPlaylist(idNamePair._id);
     }
 
+    function handlePlayPlaylist(event) {
+        event.stopPropagation();
+        store.showPlayPlaylistModal(idNamePair._id);
+    }
+
     let cardElement =
         <ListItem
             id={idNamePair._id}
@@ -98,6 +104,13 @@ function PlaylistCard(props) {
                     <DeleteIcon style={{ fontSize: '48pt' }} />
                 </IconButton>
             </Box>}
+            <Box sx={{ p: 1 }}>
+                <IconButton onClick={(event) => {
+                    handlePlayPlaylist(event, idNamePair._id)
+                }} aria-label='play'>
+                    <PlayArrowIcon style={{ fontSize: '48pt' }} />
+                </IconButton>
+            </Box>
         </ListItem>
 
     if (editActive) {

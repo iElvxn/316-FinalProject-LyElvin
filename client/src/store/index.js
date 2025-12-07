@@ -43,6 +43,7 @@ const CurrentModal = {
     DELETE_LIST: "DELETE_LIST",
     EDIT_SONG: "EDIT_SONG",
     EDIT_PLAYLIST: "EDIT_PLAYLIST",
+    PLAY_PLAYLIST: "PLAY_PLAYLIST",
     ERROR: "ERROR"
 }
 
@@ -415,6 +416,9 @@ function GlobalStoreContextProvider(props) {
     store.isEditPlaylistModalOpen = () => {
         return store.currentModal === CurrentModal.EDIT_PLAYLIST;
     }
+    store.isPlayPlaylistModalOpen = () => {
+        return store.currentModal === CurrentModal.PLAY_PLAYLIST;
+    }
     store.showEditPlaylistModal = function (playlistId) {
         async function asyncShowEditPlaylistModal(playlistId) {
             let response = await storeRequestSender.getPlaylistById(playlistId);
@@ -455,6 +459,62 @@ function GlobalStoreContextProvider(props) {
             });
         }
     }
+
+    store.showPlayPlaylistModal = function (playlistId) {
+        async function asyncShowPlayPlaylistModal(playlistId) {
+            let response = await storeRequestSender.getPlaylistById(playlistId);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                setStore({
+                    currentModal: CurrentModal.PLAY_PLAYLIST,
+                    idNamePairs: store.idNamePairs,
+                    currentList: playlist,
+                    currentSongIndex: 0,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null
+                });
+            }
+        }
+        asyncShowPlayPlaylistModal(playlistId);
+    }
+
+    store.closePlayPlaylistModal = function () {
+        setStore({
+            currentModal: CurrentModal.NONE,
+            idNamePairs: store.idNamePairs,
+            currentList: null,
+            currentSongIndex: 0,
+            currentSong: null,
+            newListCounter: store.newListCounter,
+            listNameActive: false,
+            listIdMarkedForDeletion: null,
+            listMarkedForDeletion: null
+        });
+    }
+
+    store.setCurrentSongIndex = function (index) {
+        setStore({...store, currentSongIndex: index});
+    }
+
+    store.playNextSong = function () {
+        let nextIdx = store.currentSongIndex + 1;
+        if (nextIdx >= store.currentList.songs.length) { // we loop bac kto the first song
+            nextIdx = 0;
+        }
+        store.setCurrentSongIndex(nextIdx);
+    }
+
+    store.playPreviousSong = function () {
+        let prevIdx = store.currentSongIndex - 1;
+        if (prevIdx < 0) {
+            prevIdx = store.currentList.songs.length - 1; // loop back to the last song
+        }
+        store.setCurrentSongIndex(prevIdx);
+    }
+
 
     // THE FOLLOWING 8 FUNCTIONS ARE FOR COORDINATING THE UPDATING
     // OF A LIST, WHICH INCLUDES DEALING WITH THE TRANSACTION STACK. THE

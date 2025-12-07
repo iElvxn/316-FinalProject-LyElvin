@@ -18,8 +18,8 @@ const style1 = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
-    height: 400,
+    width: 1000,
+    height: 600,
     border: '3px solid #000',
     padding: '20px',
     boxShadow: 24,
@@ -108,7 +108,7 @@ export default function MUIEditPlaylistModal() {
                     <List
                         sx={{
                             overflow: 'auto',
-                            maxHeight: 180,
+                            maxHeight: 350,
                             bgcolor: '#8000F00F',
                             borderRadius: 2,
                             p: 1
