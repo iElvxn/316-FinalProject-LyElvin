@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import PlaylistCard from './PlaylistCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
+import MUIEditPlaylistModal from './MUIEditPlaylistModal'
 
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
@@ -67,6 +68,9 @@ const HomeScreen = () => {
                     listCard
                 }
                 <MUIDeleteModal />
+                {store.isEditPlaylistModalOpen() &&
+                    <MUIEditPlaylistModal />
+                }
             </Box>
         </div>)
 }

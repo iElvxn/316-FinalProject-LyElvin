@@ -7,6 +7,7 @@ import MoveSong_Transaction from '../transactions/MoveSong_Transaction'
 import RemoveSong_Transaction from '../transactions/RemoveSong_Transaction'
 import UpdateSong_Transaction from '../transactions/UpdateSong_Transaction'
 import AuthContext from '../auth'
+import ChangePlaylistName_Transaction from '../transactions/ChangePlaylistName_Transaction'
 
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -41,6 +42,7 @@ const CurrentModal = {
     NONE: "NONE",
     DELETE_LIST: "DELETE_LIST",
     EDIT_SONG: "EDIT_SONG",
+    EDIT_PLAYLIST: "EDIT_PLAYLIST",
     ERROR: "ERROR"
 }
 
@@ -145,7 +147,7 @@ function GlobalStoreContextProvider(props) {
             // UPDATE A LIST
             case GlobalStoreActionType.SET_CURRENT_LIST: {
                 return setStore({
-                    currentModal: CurrentModal.NONE,
+                    currentModal: store.currentModal,
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     currentSongIndex: -1,
@@ -257,7 +259,7 @@ function GlobalStoreContextProvider(props) {
                                         playlist: playlist
                                     }
                                 });
-                                store.setCurrentList(id);
+                                //store.setCurrentList(id);
                             }
                         }
                         getListPairs(playlist);
@@ -287,14 +289,22 @@ function GlobalStoreContextProvider(props) {
         if (response.status === 201) {
             tps.clearAllTransactions();
             let newList = response.data.playlist;
-            storeReducer({
-                type: GlobalStoreActionType.CREATE_NEW_LIST,
-                payload: newList
-            }
-            );
 
-            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/playlist/" + newList._id);
+            const pairsResponse = await storeRequestSender.getPlaylistPairs();
+            if (pairsResponse.data.success) {
+                let pairsArray = pairsResponse.data.idNamePairs;
+                setStore({
+                    currentModal: CurrentModal.EDIT_PLAYLIST,
+                    idNamePairs: pairsArray,
+                    currentList: newList,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter + 1,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null
+                });
+            }
         }
         else {
             console.log("FAILED TO CREATE A NEW LIST");
@@ -376,6 +386,49 @@ function GlobalStoreContextProvider(props) {
     }
     store.isErrorModalOpen = () => {
         return store.currentModal === CurrentModal.ERROR;
+    }
+    store.isEditPlaylistModalOpen = () => {
+        return store.currentModal === CurrentModal.EDIT_PLAYLIST;
+    }
+    store.showEditPlaylistModal = function (playlistId) {
+        async function asyncShowEditPlaylistModal(playlistId) {
+            let response = await storeRequestSender.getPlaylistById(playlistId);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                tps.clearAllTransactions();
+                setStore({
+                    currentModal: CurrentModal.EDIT_PLAYLIST,
+                    idNamePairs: store.idNamePairs,
+                    currentList: playlist,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null
+                });
+            }
+        }
+        asyncShowEditPlaylistModal(playlistId);
+    }
+
+    store.closeEditPlaylistModal = async function () {
+        tps.clearAllTransactions();
+        const response = await storeRequestSender.getPlaylistPairs();
+        if (response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+            setStore({
+                currentModal: CurrentModal.NONE,
+                idNamePairs: pairsArray,
+                currentList: null,
+                currentSongIndex: -1,
+                currentSong: null,
+                newListCounter: store.newListCounter,
+                listNameActive: false,
+                listIdMarkedForDeletion: null,
+                listMarkedForDeletion: null
+            });
+        }
     }
 
     // THE FOLLOWING 8 FUNCTIONS ARE FOR COORDINATING THE UPDATING
@@ -503,6 +556,16 @@ function GlobalStoreContextProvider(props) {
         let transaction = new UpdateSong_Transaction(this, index, oldSongData, newSongData);
         tps.processTransaction(transaction);
     }
+    store.addChangePlaylistNameTransaction = function (oldName, newName) {
+        let transaction = new ChangePlaylistName_Transaction(store, oldName, newName);
+        tps.processTransaction(transaction);
+    }
+
+    store.changePlaylistName = function (newName) {
+        store.currentList.name = newName;
+        store.updateCurrentList();
+    }
+
     store.updateCurrentList = function () {
         async function asyncUpdateCurrentList() {
             const response = await storeRequestSender.updatePlaylistById(store.currentList._id, store.currentList);

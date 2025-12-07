@@ -31,14 +31,13 @@ function PlaylistCard(props) {
 
             console.log("load " + event.target.id);
 
-            // CHANGE THE CURRENT LIST
-            store.setCurrentList(id);
+            store.showEditPlaylistModal(id);
         }
     }
 
     function handleToggleEdit(event) {
         event.stopPropagation();
-        toggleEdit();
+        store.showEditPlaylistModal(idNamePair._id);
     }
 
     function toggleEdit() {
@@ -73,10 +72,6 @@ function PlaylistCard(props) {
             key={idNamePair._id}
             sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', /*p: 1*/ }}
             style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
-            button
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
-            }}
         >
             <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
             {!auth.isGuest && <Box sx={{ p: 1 }}>
