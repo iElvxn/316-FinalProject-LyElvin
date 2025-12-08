@@ -13,6 +13,7 @@ import Menu from '@mui/material/Menu'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { getSongs, getUserPlaylists, addSongToPlaylist } from '../store/requests';
 import MUIAddSongModal from './MUIAddSongModal';
+import MUIEditSongModal from './MUIEditSongModal';
 import GlobalStoreContext from '../store';
 
 const SongCatalogScreen = () => {
@@ -104,6 +105,11 @@ const SongCatalogScreen = () => {
         loadSongs(searchQuery, sortBy);
     }
 
+    function handleEditSong() {
+        store.showEditSongModal(-1, selectedSong);
+        setAnchorEl(null);
+    }
+
     return (
         <div id="playlist-selector">
             <div id="list-selector-heading">
@@ -180,11 +186,14 @@ const SongCatalogScreen = () => {
                                 {playlist.name}
                             </MenuItem>
                         ))}
+                        <MenuItem onClick={handleEditSong}>Edit Song</MenuItem>
+
                     </Menu>
                 </Box>
             </Box>
 
             <MUIAddSongModal onSongCreated={handleSongCreated} />
+            <MUIEditSongModal onSongUpdated={handleSongCreated} />
         </div>
     );
 };

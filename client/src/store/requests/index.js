@@ -110,6 +110,13 @@ export const createSong = (title, artist, year, youTubeId) => {
     });
 }
 
+export const updateSong = (songId, title, artist, year, youTubeId) => {
+    return fetchRequest(`/song/${songId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ title, artist, year, youTubeId })
+    });
+}
+
 const apis = {
     createPlaylist,
     deletePlaylistById,

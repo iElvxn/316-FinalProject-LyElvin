@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import { updateSong } from '../store/requests';
 
 const style1 = {
     position: 'absolute',
@@ -14,28 +15,41 @@ const style1 = {
     transform: 'translate(-50%, -50%)',
     width: 345,
     height: 250,
-    backgroundSize: "contain",
-    backgroundImage: `url(https://i.insider.com/602ee9ced3ad27001837f2ac?})`,
+    backgroundColor: 'white',
     border: '3px solid #000',
     padding: '20px',
     boxShadow: 24,
 };
 
-export default function MUIEditSongModal() {
+export default function MUIEditSongModal({ onSongUpdated }) {
     const { store } = useContext(GlobalStoreContext);
-    const [ title, setTitle ] = useState(store.currentSong.title);
-    const [ artist, setArtist ] = useState(store.currentSong.artist);
-    const [ year, setYear ] = useState(store.currentSong.year);
-    const [ youTubeId, setYouTubeId ] = useState(store.currentSong.youTubeId);
+    const [ title, setTitle ] = useState('');
+    const [ artist, setArtist ] = useState('');
+    const [ year, setYear ] = useState('');
+    const [ youTubeId, setYouTubeId ] = useState('');
 
-    function handleConfirmEditSong() {
-        let newSongData = {
-            title: title,
-            artist: artist,
-            year: year,
-            youTubeId: youTubeId
-        };
-        store.addUpdateSongTransaction(store.currentSongIndex, newSongData);        
+    // Update state when currentSong changes
+    React.useEffect(() => {
+        if (store.currentSong) {
+            setTitle(store.currentSong.title || '');
+            setArtist(store.currentSong.artist || '');
+            setYear(store.currentSong.year || '');
+            setYouTubeId(store.currentSong.youTubeId || '');
+        }
+    }, [store.currentSong]);
+
+    async function handleConfirmEditSong() {
+        try {
+            const response = await updateSong(store.currentSong._id, title, artist, year, youTubeId);
+            if (response.data.success) {
+                store.hideModals();
+                if (onSongUpdated) {
+                    onSongUpdated();
+                }
+            }
+        } catch (error) {
+            console.error('Error updating song:', error);
+        }
     }
 
     function handleCancelEditSong() {

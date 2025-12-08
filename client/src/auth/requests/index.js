@@ -40,14 +40,14 @@ const fetchRequest = async (endpoint, options = {}) => {
 // WE NEED TO PUT THINGS INTO THE DATABASE OR IF WE HAVE SOME
 // CUSTOM FILTERS FOR QUERIES
 
-export const getLoggedIn = () => fetchRequest(`/loggedIn/`, {method: "GET"});
+export const getLoggedIn = () => fetchRequest(`/loggedIn/`, { method: "GET" });
 export const loginUser = (email, password) => {
     return fetchRequest(`/login/`, {
         method: "POST",
         body: JSON.stringify({ email, password })
     })
 }
-export const logoutUser = () => fetchRequest(`/logout/`, {method: "GET"})
+export const logoutUser = () => fetchRequest(`/logout/`, { method: "GET" })
 export const registerUser = (userName, email, password, passwordVerify, avatar) => {
     return fetchRequest('/register/', {
         method: "POST",
@@ -71,6 +71,15 @@ export const updateUser = (userName, password, passwordVerify, avatar) => {
         })
     })
 }
+
+export const updateSong = (songId, title, artist, year, youTubeId) => {
+    return fetchRequest(`/song/${songId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ title, artist, year, youTubeId })
+    });
+}
+
+
 const apis = {
     getLoggedIn,
     registerUser,

@@ -235,6 +235,29 @@ createSong = async (req, res) => {
     }
 }
 
+updateSong = async (req, res) => {
+    if (auth.verifyUser(req) === null) {
+        return res.status(400).json({ errorMessage: 'UNAUTHORIZED' });
+    }
+
+    const { id } = req.params;
+    const { title, artist, year, youTubeId } = req.body;
+
+    if (!title || !artist || !year || !youTubeId) {
+        return res.status(400).json({
+            errorMessage: 'All fields are required'
+        });
+    }
+
+    try {
+        const user = await DatabaseManager.getUserById(req.userId);
+        const song = await DatabaseManager.updateSong(id, user.email, { title, artist, year: parseInt(year), youTubeId });
+        return res.status(200).json({ success: true, song });
+    } catch (error) {
+        return res.status(400).json({ errorMessage: error.message });
+    }
+}
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
@@ -247,5 +270,6 @@ module.exports = {
     addSongToPlaylist,
     getUserPlaylists,
     incrementSongListenCount,
-    createSong
+    createSong,
+    updateSong
 }

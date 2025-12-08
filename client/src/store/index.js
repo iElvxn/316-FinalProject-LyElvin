@@ -44,8 +44,8 @@ const CurrentModal = {
     EDIT_SONG: "EDIT_SONG",
     EDIT_PLAYLIST: "EDIT_PLAYLIST",
     PLAY_PLAYLIST: "PLAY_PLAYLIST",
+    ADD_SONG: "ADD_SONG",
     ERROR: "ERROR",
-    ADD_SONG: "ADD_SONG"
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -510,7 +510,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.setCurrentSongIndex = function (index) {
-        setStore({...store, currentSongIndex: index});
+        setStore({ ...store, currentSongIndex: index });
     }
 
     store.playNextSong = function () {

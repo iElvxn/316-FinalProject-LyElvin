@@ -439,6 +439,28 @@ class MongoDBManager extends DatabaseManager {
             throw error;
         }
     }
+
+    async updateSong(songId, userEmail, updateData) {
+        try {
+            const song = await Song.findById(songId);
+            if (!song) {
+                throw new Error('Song not found');
+            }
+
+            if (song.addedBy == userEmail) { //only the owner of the song can edit it
+                song.title = updateData.title;
+                song.artist = updateData.artist;
+                song.year = updateData.year;
+                song.youTubeId = updateData.youTubeId;
+
+                await song.save();
+                return song.toObject()
+            }
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
+    }
 }
 const dbManager = new MongoDBManager();
 module.exports = dbManager;
