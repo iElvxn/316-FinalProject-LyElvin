@@ -72,7 +72,7 @@ const HomeScreen = () => {
     let listCard = "";
     if (store) {
         listCard =
-            <List sx={{ width: '100%', maxHeight: 'calc(100vh - 300px)', overflow: 'auto', bgcolor: 'background.paper', mb: "20px" }}>
+            <List sx={{ width: '100%', maxHeight: 'calc(100vh - 300px)', overflow: 'auto', bgcolor: 'transparent', mb: "20px" }}>
                 {
                     store.idNamePairs.map((pair) => (
                         <PlaylistCard
@@ -91,22 +91,130 @@ const HomeScreen = () => {
             </div>
 
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, height: '100%' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', width: "50%" }}>
-                    <TextField label="by Playlist Name" size="small" value={searchQuery.name}
-                        onChange={handleQueryChange('name')} onKeyDown={handleKeyPress} />
-                    <TextField label="by User Name" size="small" value={searchQuery.user}
-                        onChange={handleQueryChange('user')} onKeyDown={handleKeyPress} />
-                    <TextField label="by Song Title" size="small" value={searchQuery.songTitle}
-                        onChange={handleQueryChange('songTitle')} onKeyDown={handleKeyPress} />
-                    <TextField label="by Song Artist" size="small" value={searchQuery.songArtist}
-                        onChange={handleQueryChange('songArtist')} onKeyDown={handleKeyPress} />
-                    <TextField label="by Song Year" size="small" value={searchQuery.songYear}
-                        onChange={handleQueryChange('songYear')} onKeyDown={handleKeyPress} />
-                    <Button variant="contained" onClick={handleSearch}>Search</Button>
-                    <Button variant="outlined" onClick={handleClear}>Clear</Button>
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: "30%", gap: 1, mt: 2 }}>
+                    <TextField
+                        label="by Playlist Name"
+                        size="small"
+                        value={searchQuery.name}
+                        onChange={handleQueryChange('name')}
+                        onKeyDown={handleKeyPress}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: '#FFFFFF',
+                                '& fieldset': { borderColor: '#FFFFFF' },
+                                '&:hover fieldset': { borderColor: '#FFFFFF' },
+                                '&.Mui-focused fieldset': { borderColor: '#1db954' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#1db954' },
+                        }}
+                    />
+                    <TextField
+                        label="by User Name"
+                        size="small"
+                        value={searchQuery.user}
+                        onChange={handleQueryChange('user')}
+                        onKeyDown={handleKeyPress}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: '#FFFFFF',
+                                '& fieldset': { borderColor: '#FFFFFF' },
+                                '&:hover fieldset': { borderColor: '#FFFFFF' },
+                                '&.Mui-focused fieldset': { borderColor: '#1db954' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#1db954' },
+                        }}
+                    />
+                    <TextField
+                        label="by Song Title"
+                        size="small"
+                        value={searchQuery.songTitle}
+                        onChange={handleQueryChange('songTitle')}
+                        onKeyDown={handleKeyPress}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: '#FFFFFF',
+                                '& fieldset': { borderColor: '#FFFFFF' },
+                                '&:hover fieldset': { borderColor: '#FFFFFF' },
+                                '&.Mui-focused fieldset': { borderColor: '#1db954' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#1db954' },
+                        }}
+                    />
+                    <TextField
+                        label="by Song Artist"
+                        size="small"
+                        value={searchQuery.songArtist}
+                        onChange={handleQueryChange('songArtist')}
+                        onKeyDown={handleKeyPress}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: '#FFFFFF',
+                                '& fieldset': { borderColor: '#FFFFFF' },
+                                '&:hover fieldset': { borderColor: '#FFFFFF' },
+                                '&.Mui-focused fieldset': { borderColor: '#1db954' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#1db954' },
+                        }}
+                    />
+                    <TextField
+                        label="by Song Year"
+                        size="small"
+                        value={searchQuery.songYear}
+                        onChange={handleQueryChange('songYear')}
+                        onKeyDown={handleKeyPress}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: '#FFFFFF',
+                                '& fieldset': { borderColor: '#FFFFFF' },
+                                '&:hover fieldset': { borderColor: '#FFFFFF' },
+                                '&.Mui-focused fieldset': { borderColor: '#1db954' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#1db954' },
+                        }}
+                    />
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={handleSearch}
+                            sx={{ bgcolor: '#1db954', '&:hover': { bgcolor: '#1ed760' } }}
+                        >
+                            Search
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            onClick={handleClear}
+                            sx={{
+                                color: '#ffffffff',
+                                borderColor: '#b3b3b3',
+                                '&:hover': { borderColor: '#ffffffff', bgcolor: 'rgba(255,255,255,0.1)' }
+                            }}
+                        >
+                            Clear
+                        </Button>
+                    </Box>
                 </Box>
-                <Box sx={{ bgcolor: "background.paper", flexGrow: 1 }} id="list-selector-list">
-                    <FormControl size="small" sx={{mt: 1 }}>
+                <Box sx={{ flexGrow: 1 }} id="list-selector-list">
+                    <FormControl
+                        size="small"
+                        sx={{
+                            mt: 1,
+                            flexGrow: 1,
+                            '& .MuiOutlinedInput-root': {
+                                color: '#ffffffff',
+                                '& fieldset': { borderColor: '#b3b3b3' },
+                                '&:hover fieldset': { borderColor: '#ffffffff' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#b3b3b3' },
+                            '& .MuiSvgIcon-root': { color: '#b3b3b3' },
+                        }}
+                    >
                         <InputLabel>Sort By</InputLabel>
                         <Select value={sortBy} label="Sort By" onChange={handleSortChange}>
                             <MenuItem value="name-asc">Name (A-Z)</MenuItem>
@@ -120,8 +228,7 @@ const HomeScreen = () => {
                     {
                         listCard
                     }
-                    {!auth.isGuest && <Fab sx={{ marginTop: 2, marginLeft: 2 }}
-                        color="primary"
+                    {!auth.isGuest && <Fab sx={{marginTop: 2,marginLeft: 2, bgcolor: '#1db954', '&:hover': { bgcolor: '#1ed760' }}}
                         aria-label="add"
                         id="add-list-button"
                         onClick={handleCreateNewList}

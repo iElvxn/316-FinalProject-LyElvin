@@ -82,37 +82,38 @@ function PlaylistCard(props) {
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
-            sx={{ borderRadius: "25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', /*p: 1*/ }}
-            style={{ transform: "translate(1%,0%)", width: '98%', fontSize: '48pt' }}
+            sx={{borderRadius: "8px", p: "12px", bgcolor: '#282828', marginTop: '8px', display: 'flex', '&:hover': { bgcolor: '#4b4a4aff' }
+            }}
+            style={{ width: '98%', fontSize: '16pt' }}
         >
             <Box sx={{ p: 1, flexGrow: 1 }}>
-                <Box>{idNamePair.name}</Box>
-                <Box sx={{ fontSize: '14pt', color: '#666' }}>by: {idNamePair.ownerUsername}</Box>
-                <Box sx={{ fontSize: '14pt', color: '#666' }}>{idNamePair.listenerCount || 0} Listeners</Box>
+                <Box sx={{ color: '#ffffff', fontWeight: 500 }}>{idNamePair.name}</Box>
+                <Box sx={{ fontSize: '12pt', color: '#b3b3b3' }}>by: {idNamePair.ownerUsername}</Box>
+                <Box sx={{ fontSize: '12pt', color: '#b3b3b3' }}>{idNamePair.listenerCount || 0} Listeners</Box>
             </Box>
             {!auth.isGuest && <Box sx={{ p: 1 }}>
-                <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{ fontSize: '48pt' }} />
+                <IconButton onClick={handleToggleEdit} aria-label='edit' sx={{ color: '#b3b3b3', '&:hover': { color: '#1db954' } }}>
+                    <EditIcon style={{ fontSize: '24pt' }} />
                 </IconButton>
             </Box>}
             {!auth.isGuest && <Box sx={{ p: 1 }}>
-                <IconButton onClick={handleCopyPlaylist} aria-label='edit'>
-                    <ContentCopyIcon style={{ fontSize: '48pt' }} />
+                <IconButton onClick={handleCopyPlaylist} aria-label='copy' sx={{ color: '#b3b3b3', '&:hover': { color: '#1db954' } }}>
+                    <ContentCopyIcon style={{ fontSize: '24pt' }} />
                 </IconButton>
             </Box>
             }
             {!auth.isGuest && <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                     handleDeleteList(event, idNamePair._id)
-                }} aria-label='delete'>
-                    <DeleteIcon style={{ fontSize: '48pt' }} />
+                }} aria-label='delete' sx={{ color: '#b3b3b3', '&:hover': { color: '#e74c3c' } }}>
+                    <DeleteIcon style={{ fontSize: '24pt' }} />
                 </IconButton>
             </Box>}
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                     handlePlayPlaylist(event, idNamePair._id)
-                }} aria-label='play'>
-                    <PlayArrowIcon style={{ fontSize: '48pt' }} />
+                }} aria-label='play' sx={{ color: '#1db954', '&:hover': { color: '#1ed760' } }}>
+                    <PlayArrowIcon style={{ fontSize: '28pt' }} />
                 </IconButton>
             </Box>
         </ListItem>

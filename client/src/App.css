@@ -1,34 +1,35 @@
 :root {
-  /* 
-        FIRST WE'LL DEFINE OUR SWATCHES, i.e. THE COMPLEMENTARY
-        COLORS THAT WE'LL USE TOGETHER IN MULTIPLE PLACES THAT
-        TOGETHER WILL MAKE UP A GIVEN THEME
-    
-        @author McKilla Gorilla
-    */
-  --swatch-foundation: #eeeedd;
-  --swatch-primary: #e6e6e6;
-  --swatch-complement: #e1e4cb;
-  --swatch-contrast: #999999;
-  --swatch-accent: #669966;
-  --swatch-status: #123456;
-  --my-font-family: "Robaaaoto";
+  /* Spotify Color Scheme */
+  --spotify-black: #121212;
+  --spotify-dark-gray: #181818;
+  --spotify-gray: #282828;
+  --spotify-light-gray: #b3b3b3;
+  --spotify-white: #ffffff;
+  --spotify-green: #1db954;
+  --spotify-green-hover: #1ed760;
+  --spotify-card: #181818;
+  --spotify-card-hover: #282828;
   --bounceEasing: cubic-bezier(0.51, 0.92, 0.24, 1.15);
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 body {
-  background-image: url('https://thumbs.dreamstime.com/b/music-notes-symbols-seamless-pattern-design-fully-editable-fill-background-color-music-notes-symbols-seamless-pattern-118273669.jpg')
+  background-color: var(--spotify-black);
+  margin: 0;
+  padding: 0;
 }
 
 #root {
-  background-color: var(--swatch-primary);
-  font-family: "Lexend Exa";
+  background-color: var(--spotify-black);
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   position: absolute;
   width: 80%;
   left: 10%;
   height: 90%;
   top: 5%;
   overflow: hidden;
+  color: var(--spotify-white);
 }
 
 #app-root {
@@ -46,13 +47,11 @@ body {
   width: 100%;
   height: 10%;
   float: left;
-  background-image: linear-gradient(to bottom, #b8b808, #636723);
-  color: white;
+  background-color: var(--spotify-black);
+  color: var(--spotify-white);
   font-size: 48pt;
-  border-color: black;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 10px;
+  border: none;
+  border-radius: 0;
 }
 #splash-screen {
   background-image: url("https://www.gifcen.com/wp-content/uploads/2022/03/rickroll-gif-7.gif");
@@ -123,11 +122,12 @@ body {
   top: 90%;
   width: 100%;
   height: 10%;
-  background-color: rgb(0, 127, 255);
+  background-color: var(--spotify-green);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 50pt;
+  font-size: 24pt;
+  color: var(--spotify-white);
 }
 
 #list-selector-heading {
@@ -139,10 +139,11 @@ body {
   height: 10%;
   text-align: center;
   font-size: 24pt;
-  font-weight: bold;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--spotify-white);
 }
 
 #add-list-button {
@@ -155,39 +156,43 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: var(--spotify-dark-gray);
+  border-radius: 8px;
 }
 
 
 .list-card,
 .selected-list-card,
 .unselected-list-card {
-  font-size: 18pt;
-  margin: 10px;
-  padding: 20px;
-  border-radius: 25px;
+  font-size: 14pt;
+  margin: 8px;
+  padding: 16px;
+  border-radius: 8px;
+  color: var(--spotify-white);
+  transition: background-color 0.3s ease;
 }
 
 .list-card:aria-disabled,
 .list-card[aria-disabled] {
-  border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
+  border: none;
+  background-color: var(--spotify-gray);
+  color: var(--spotify-light-gray);
   pointer-events: none;
 }
 
 .unselected-list-card:hover {
   cursor: pointer;
-  background-color: var(--swatch-contrast);
-  color: white;
+  background-color: var(--spotify-card-hover);
+  color: var(--spotify-white);
 }
 
 .selected-list-card {
-  background-color: var(--swatch-accent);
-  color: white;
+  background-color: var(--spotify-green);
+  color: var(--spotify-white);
 }
 
 .unselected-list-card {
-  background-color: #d6c4d8;
+  background-color: var(--spotify-card);
 }
 
 .list-card-button {
@@ -241,7 +246,17 @@ body {
 }
 
 input {
-  font-size: 20pt;
+  font-size: 14pt;
+  background-color: var(--spotify-gray);
+  color: var(--spotify-white);
+  border: 1px solid var(--spotify-light-gray);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--spotify-white);
 }
 
 .playlister-item,
@@ -298,12 +313,12 @@ input {
   overflow: visible;
   display: flex;
   flex-direction: column;
-  background: var(--swatch-complement);
+  background: var(--spotify-gray);
   cursor: default;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
-  box-shadow: 5px 10px #888888;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+  color: var(--spotify-white);
 }
 
 .modal-textfield {
@@ -315,12 +330,12 @@ input {
   position: relative;
   max-width: 800px;
   max-height: 80vh;
-  background: var(--swatch-complement);
+  background: var(--spotify-gray);
   overflow: auto;
   cursor: default;
-  border-width: 5px;
-  border-radius: 10px;
-  border-style: groove;
+  border: none;
+  border-radius: 8px;
+  color: var(--spotify-white);
 }
 
 .modal-dialog > * {

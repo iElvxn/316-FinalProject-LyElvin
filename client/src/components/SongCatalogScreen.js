@@ -153,24 +153,90 @@ const SongCatalogScreen = () => {
             </div>
 
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, height: '100%' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', width: "30%", gap: 1, alignItems: 'center' }}>
-                    <TextField label="by Title" size="small" fullWidth value={searchQuery.title}
-                        onChange={handleQueryChange('title')} onKeyDown={handleKeyPress} />
-                    <TextField label="by Artist" size="small" fullWidth value={searchQuery.artist}
-                        onChange={handleQueryChange('artist')} onKeyDown={handleKeyPress} />
-                    <TextField label="by Year" size="small" fullWidth value={searchQuery.year}
-                        onChange={handleQueryChange('year')} onKeyDown={handleKeyPress} />
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: "30%", gap: 1, alignItems: 'center', mt: 2 }}>
+                    <TextField
+                        label="by Title"
+                        size="small"
+                        fullWidth
+                        value={searchQuery.title}
+                        onChange={handleQueryChange('title')}
+                        onKeyDown={handleKeyPress}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: '#FFFFFF',
+                                '& fieldset': { borderColor: '#FFFFFF' },
+                                '&:hover fieldset': { borderColor: '#FFFFFF' },
+                                '&.Mui-focused fieldset': { borderColor: '#1db954' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#1db954' },
+                        }}
+                    />
+                    <TextField
+                        label="by Artist"
+                        size="small"
+                        fullWidth
+                        value={searchQuery.artist}
+                        onChange={handleQueryChange('artist')}
+                        onKeyDown={handleKeyPress}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: '#FFFFFF',
+                                '& fieldset': { borderColor: '#FFFFFF' },
+                                '&:hover fieldset': { borderColor: '#FFFFFF' },
+                                '&.Mui-focused fieldset': { borderColor: '#1db954' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#1db954' },
+                        }}
+                    />
+                    <TextField
+                        label="by Year"
+                        size="small"
+                        fullWidth
+                        value={searchQuery.year}
+                        onChange={handleQueryChange('year')}
+                        onKeyDown={handleKeyPress}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: '#FFFFFF',
+                                '& fieldset': { borderColor: '#FFFFFF' },
+                                '&:hover fieldset': { borderColor: '#FFFFFF' },
+                                '&.Mui-focused fieldset': { borderColor: '#1db954' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#FFFFFF' },
+                            '& .MuiInputLabel-root.Mui-focused': { color: '#1db954' },
+                        }}
+                    />
                     <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
-                        <Button variant="contained" fullWidth onClick={handleSearch}>Search</Button>
-                        <Button variant="outlined" fullWidth onClick={handleClear}>Clear</Button>
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={handleSearch}
+                            sx={{ bgcolor: '#1db954', '&:hover': { bgcolor: '#1ed760' } }}
+                        >
+                            Search
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            fullWidth
+                            onClick={handleClear}
+                            sx={{
+                                color: '#fff',
+                                borderColor: '#b3b3b3',
+                                '&:hover': { borderColor: '#fff', bgcolor: 'rgba(255,255,255,0.1)' }
+                            }}
+                        >
+                            Clear
+                        </Button>
                     </Box>
 
                     {selectedSong && (
-                        <Box sx={{ mt: 2, p: 1, bgcolor: 'white', borderRadius: 2, textAlign: 'center' }}>
-                            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>
+                        <Box sx={{ mt: 2, p: 1, bgcolor: '#282828', borderRadius: 2, textAlign: 'center' }}>
+                            <Typography sx={{ fontWeight: 'bold', mb: 1, color: '#1db954' }}>
                                 Now Playing:
                             </Typography>
-                            <Typography sx={{ mb: 1 }}>
+                            <Typography sx={{ mb: 1, color: '#fff' }}>
                                 {selectedSong.title} by {selectedSong.artist}
                             </Typography>
                             <YouTube
@@ -182,15 +248,27 @@ const SongCatalogScreen = () => {
 
                     {auth.user && <Button
                         variant="contained"
-                        color="success"
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 2, bgcolor: '#1db954', '&:hover': { bgcolor: '#1ed760' } }}
                         onClick={() => store.showAddSongModal()}
                     >
                         Add New Song
                     </Button>}
                 </Box>
-                <Box sx={{ bgcolor: "background.paper", flexGrow: 1 }} id="list-selector-list">
-                    <FormControl size="small" sx={{ mt: 1 }}>
+                <Box sx={{ flexGrow: 1 }} id="list-selector-list">
+                    <FormControl
+                        size="small"
+                        sx={{
+                            mt: 1,
+                            minWidth: 150,
+                            '& .MuiOutlinedInput-root': {
+                                color: '#fff',
+                                '& fieldset': { borderColor: '#b3b3b3' },
+                                '&:hover fieldset': { borderColor: '#fff' },
+                            },
+                            '& .MuiInputLabel-root': { color: '#b3b3b3' },
+                            '& .MuiSvgIcon-root': { color: '#b3b3b3' },
+                        }}
+                    >
                         <InputLabel>Sort By</InputLabel>
                         <Select value={sortBy} label="Sort By" onChange={handleSortChange}>
                             <MenuItem value="title-asc">Title (A-Z)</MenuItem>
@@ -212,27 +290,28 @@ const SongCatalogScreen = () => {
                                 key={song._id}
                                 onClick={() => handleSongClick(song)}
                                 sx={{
-                                    borderRadius: "25px",
-                                    p: "10px",
-                                    bgcolor: selectedSong?._id === song._id ? '#d4a5ff' : '#8000F00F',
-                                    marginTop: '15px',
+                                    borderRadius: "8px",
+                                    p: "12px",
+                                    bgcolor: selectedSong?._id === song._id ? '#1db954' : '#282828',
+                                    marginTop: '8px',
                                     display: 'flex',
                                     cursor: 'pointer',
-                                    '&:hover': { bgcolor: '#d4a5ff' }
+                                    transition: 'background-color 0.3s ease',
+                                    '&:hover': { bgcolor: selectedSong?._id === song._id ? '#1ed760' : '#3e3e3e' }
                                 }}
-                                style={{ width: '98%', fontSize: '24pt' }}
+                                style={{ width: '98%', fontSize: '16pt' }}
                             >
                                 <Box sx={{ p: 1, flexGrow: 1 }}>
-                                    <Box>{song.title}</Box>
-                                    <Box sx={{ fontSize: '14pt', color: '#3c184dff' }}>by: {song.artist}</Box>
-                                    <Box sx={{ fontSize: '14pt', color: '#666' }}>Year: {song.year}</Box>
+                                    <Box sx={{ color: '#fff', fontWeight: 500 }}>{song.title}</Box>
+                                    <Box sx={{ fontSize: '12pt', color: '#b3b3b3' }}>by: {song.artist}</Box>
+                                    <Box sx={{ fontSize: '12pt', color: '#b3b3b3' }}>Year: {song.year}</Box>
                                 </Box>
                                 <Box sx={{ p: 1, textAlign: 'right' }}>
-                                    <Box sx={{ fontSize: '14pt', color: '#666' }}>{song.listenCount || 0} Listens</Box>
-                                    <Box sx={{ fontSize: '14pt', color: '#666' }}>In {song.playlistCount || 0} Playlists</Box>
+                                    <Box sx={{ fontSize: '12pt', color: '#b3b3b3' }}>{song.listenCount || 0} Listens</Box>
+                                    <Box sx={{ fontSize: '12pt', color: '#b3b3b3' }}>In {song.playlistCount || 0} Playlists</Box>
                                 </Box>
 
-                                {auth.user && <IconButton onClick={(event) => handleEllipsisClick(event, song)}>
+                                {auth.user && <IconButton onClick={(event) => handleEllipsisClick(event, song)} sx={{ color: '#b3b3b3' }}>
                                     <MoreVertIcon />
                                 </IconButton>}
                             </ListItem>
