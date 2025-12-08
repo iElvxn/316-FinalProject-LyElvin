@@ -15,10 +15,12 @@ import { getSongs, getUserPlaylists, addSongToPlaylist } from '../store/requests
 import MUIAddSongModal from './MUIAddSongModal';
 import MUIEditSongModal from './MUIEditSongModal';
 import GlobalStoreContext from '../store';
+import AuthContext from '../auth';
 import MUIDeleteSongModal from './MUIDeleteSongModal ';
 
 const SongCatalogScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const [songs, setSongs] = useState([]);
     const [searchQuery, setSearchQuery] = useState({
         title: '',
@@ -28,6 +30,7 @@ const SongCatalogScreen = () => {
     const [sortBy, setSortBy] = useState('title-asc');
     const [selectedSong, setSelectedSong] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [playlistAnchorEl, setPlaylistAnchorEl] = useState(null);
     const [playlists, setPlaylists] = useState(null);
 
     useEffect(() => {
@@ -79,16 +82,30 @@ const SongCatalogScreen = () => {
 
     function handleMenuClose() {
         setAnchorEl(null);
+        setPlaylistAnchorEl(null);
+    }
+
+    function handleAddToPlaylistClick(event) {
+        setPlaylistAnchorEl(event.currentTarget);
+    }
+
+    function handlePlaylistMenuClose() {
+        setPlaylistAnchorEl(null);
     }
 
     async function handleAddToPlaylist(playlistId) {
         try {
             await addSongToPlaylist(playlistId, selectedSong._id);
             setAnchorEl(null);
+            setPlaylistAnchorEl(null);
             loadSongs(searchQuery, sortBy);
         } catch (error) {
             console.error('Error adding song to playlist:', error);
         }
+    }
+
+    function canEditSong() {
+        return auth.user && selectedSong && selectedSong.addedBy === auth.user.email;
     }
 
     async function loadUserPlaylists() {
@@ -132,14 +149,14 @@ const SongCatalogScreen = () => {
                         onChange={handleQueryChange('year')} onKeyDown={handleKeyPress} />
                     <Button variant="contained" onClick={handleSearch}>Search</Button>
                     <Button variant="outlined" onClick={handleClear}>Clear</Button>
-                    <Button
+                    {auth.user && <Button
                         variant="contained"
                         color="success"
                         sx={{ mt: 2 }}
                         onClick={() => store.showAddSongModal()}
                     >
                         Add New Song
-                    </Button>
+                    </Button>}
                 </Box>
                 <Box sx={{ bgcolor: "background.paper", flexGrow: 1 }} id="list-selector-list">
                     <FormControl size="small" sx={{ mt: 1 }}>
@@ -175,9 +192,9 @@ const SongCatalogScreen = () => {
                                     <Box sx={{ fontSize: '14pt', color: '#666' }}>In {song.playlistCount || 0} Playlists</Box>
                                 </Box>
 
-                                <IconButton onClick={(event) => handleEllipsisClick(event, song)}>
+                                {auth.user && <IconButton onClick={(event) => handleEllipsisClick(event, song)}>
                                     <MoreVertIcon />
-                                </IconButton>
+                                </IconButton>}
                             </ListItem>
                         ))}
                     </List>
@@ -185,6 +202,23 @@ const SongCatalogScreen = () => {
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
+                    >
+                        {auth.user &&(
+                            <MenuItem onClick={handleAddToPlaylistClick}>
+                                Add to Playlist
+                            </MenuItem>
+                        )}
+                        {canEditSong() && (
+                            <MenuItem onClick={handleEditSong}>Edit Song</MenuItem>
+                        )}
+                        {canEditSong() && (
+                            <MenuItem onClick={handleRemoveSong}>Remove from Catalog</MenuItem>
+                        )}
+                    </Menu>
+                    <Menu
+                        anchorEl={playlistAnchorEl}
+                        open={Boolean(playlistAnchorEl)}
+                        onClose={handlePlaylistMenuClose}
                         transitionDuration={0}
                     >
                         {playlists && playlists.map((playlist) => (
@@ -192,9 +226,6 @@ const SongCatalogScreen = () => {
                                 {playlist.name}
                             </MenuItem>
                         ))}
-                        <MenuItem onClick={handleEditSong}>Edit Song</MenuItem>
-                        <MenuItem onClick={handleRemoveSong}>Remove from Catalog</MenuItem>
-
                     </Menu>
                 </Box>
             </Box>
