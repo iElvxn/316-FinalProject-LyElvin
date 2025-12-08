@@ -163,6 +163,37 @@ getSongs = async (req, res) => {
     }
 }
 
+addSongToPlaylist = async (req, res) => {
+    if (auth.verifyUser(req) === null) {
+        return res.status(400).json({ errorMessage: 'UNAUTHORIZED' });
+    }
+    const { playlistId, songId } = req.body;
+
+    try {
+        const playlist = await DatabaseManager.addSongToPlaylist(
+            playlistId,
+            songId,
+            req.userId
+        );
+        return res.status(200).json({ success: true, playlist });
+    } catch (error) {
+        return res.status(400).json({ errorMessage: error.message });
+    }
+}
+
+getUserPlaylists = async (req, res) => {
+    if (auth.verifyUser(req) === null) {
+        return res.status(400).json({ errorMessage: 'UNAUTHORIZED' });
+    }
+
+    try {
+        const playlists = await DatabaseManager.getUserPlaylists(req.userId);
+        return res.status(200).json({ success: true, playlists });
+    } catch (error) {
+        return res.status(400).json({ errorMessage: error.message });
+    }
+}
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
@@ -171,5 +202,7 @@ module.exports = {
     getPlaylists,
     updatePlaylist,
     incrementListener,
-    getSongs
+    getSongs,
+    addSongToPlaylist,
+    getUserPlaylists
 }

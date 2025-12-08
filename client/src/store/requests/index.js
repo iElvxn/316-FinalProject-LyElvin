@@ -85,6 +85,17 @@ export const getSongs = (query = {}, sortBy = 'title-asc') => {
     return fetchRequest(url);
 }
 
+export const addSongToPlaylist = (playlistId, songId) => {
+    return fetchRequest('/song/add-to-playlist', {
+        method: 'POST',
+        body: JSON.stringify({ playlistId, songId })
+    });
+}
+
+export const getUserPlaylists = () => {
+    return fetchRequest('/user/playlists');
+}
+
 const apis = {
     createPlaylist,
     deletePlaylistById,

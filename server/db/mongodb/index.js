@@ -345,6 +345,58 @@ class MongoDBManager extends DatabaseManager {
         const songs = await Song.find(filter).sort(sortOption);
         return songs.map(song => song.toObject());
     }
+
+    async addSongToPlaylist(playlistId, songId, userId) {
+        const playlist = await Playlist.findById(playlistId);
+        if (!playlist) {
+            throw new Error('Playlist not found');
+        }
+
+        const user = await User.findById(userId);
+        if (!user || playlist.ownerEmail !== user.email) {
+            throw new Error('Not authorized');
+        }
+
+        //get the song
+        const song = await Song.findById(songId);
+        if (!song) {
+            throw new Error('Song not found in catalog');
+        }
+
+        //make a deep copy
+        const songCopy = {
+            title: song.title,
+            artist: song.artist,
+            year: song.year,
+            youTubeId: song.youTubeId
+        }
+
+        //add to playlist
+        playlist.songs.push(songCopy);
+        await playlist.save();
+
+        // Increment playlist counter
+        if (song.playlistCount) {
+            song.playlistCount += 1
+        } else {
+            song.playlistCount = 1
+        }
+
+        await song.save();
+
+        return playlist.toObject()
+    }
+
+    async getUserPlaylists(userId) {
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        const playlists = await Playlist.find({ ownerEmail: user.email })
+            .select('_id name'); //we only need id and playlist name
+
+        return playlists.map(playlist => ({ _id: playlist._id, name: playlist.name }));
+    }
 }
 const dbManager = new MongoDBManager();
 module.exports = dbManager;

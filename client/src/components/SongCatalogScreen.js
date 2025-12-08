@@ -8,7 +8,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import { getSongs } from '../store/requests';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu'
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { getSongs, getUserPlaylists, addSongToPlaylist } from '../store/requests';
 
 const SongCatalogScreen = () => {
     const [songs, setSongs] = useState([]);
@@ -18,9 +21,13 @@ const SongCatalogScreen = () => {
         year: ''
     });
     const [sortBy, setSortBy] = useState('title-asc');
+    const [selectedSong, setSelectedSong] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [playlists, setPlaylists] = useState(null);
 
     useEffect(() => {
         loadSongs();
+        loadUserPlaylists();
     }, []);
 
     async function loadSongs(query = {}, sort = 'title-asc') {
@@ -60,6 +67,36 @@ const SongCatalogScreen = () => {
         loadSongs(searchQuery, event.target.value);
     }
 
+    function handleEllipsisClick(event, song) {
+        setSelectedSong(song);
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleMenuClose() {
+        setAnchorEl(null);
+    }
+
+    async function handleAddToPlaylist(playlistId) {
+        try {
+            await addSongToPlaylist(playlistId, selectedSong._id);
+            setAnchorEl(null);
+            loadSongs(searchQuery, sortBy);
+        } catch (error) {
+            console.error('Error adding song to playlist:', error);
+        }
+    }
+
+    async function loadUserPlaylists() {
+        try {
+            const response = await getUserPlaylists();
+            if (response.data.success) {
+                setPlaylists(response.data.playlists);
+            }
+        } catch (error) {
+            console.error('Error loading playlists:', error);
+        }
+    }
+
     return (
         <div id="playlist-selector">
             <div id="list-selector-heading">
@@ -94,12 +131,12 @@ const SongCatalogScreen = () => {
                         </Select>
                     </FormControl>
 
-                    <List sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <List sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         {songs.map((song) => (
                             <ListItem
                                 key={song._id}
                                 sx={{ borderRadius: "25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex' }}
-                                style={{width: '98%', fontSize: '24pt'}}
+                                style={{ width: '98%', fontSize: '24pt' }}
                             >
                                 <Box sx={{ p: 1, flexGrow: 1 }}>
                                     <Box>{song.title}</Box>
@@ -110,9 +147,25 @@ const SongCatalogScreen = () => {
                                     <Box sx={{ fontSize: '14pt', color: '#666' }}>{song.listenCount || 0} Listens</Box>
                                     <Box sx={{ fontSize: '14pt', color: '#666' }}>In {song.playlistCount || 0} Playlists</Box>
                                 </Box>
+
+                                <IconButton onClick={(event) => handleEllipsisClick(event, song)}>
+                                    <MoreVertIcon />
+                                </IconButton>
                             </ListItem>
                         ))}
                     </List>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                        transitionDuration={0}
+                    >
+                        {playlists && playlists.map((playlist) => (
+                            <MenuItem key={playlist._id} onClick={() => handleAddToPlaylist(playlist._id)}>
+                                {playlist.name}
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 </Box>
             </Box>
         </div>
