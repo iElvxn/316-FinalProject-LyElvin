@@ -1,6 +1,23 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1db954',
+      contrastText: '#ffffff'
+    },
+    secondary: {
+      main: '#282828'
+    },
+    background: {
+      default: '#121212',
+      paper: '#181818'
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: '#b3b3b3'
+    }
+  },
   typography: {
     fontFamily: "'Outfit', 'Helvetica Neue', Helvetica, Arial, sans-serif",
     button: {

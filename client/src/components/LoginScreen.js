@@ -29,7 +29,7 @@ export default function LoginScreen() {
 
     let modalJSX = "";
     console.log(auth);
-    if (auth.errorMessage !== null){
+    if (auth.errorMessage !== null) {
         modalJSX = <MUIErrorModal />;
     }
     console.log(modalJSX);
@@ -43,15 +43,19 @@ export default function LoginScreen() {
                 sm={4}
                 md={7}
                 sx={{
-                    backgroundImage: 'url(https://static.displate.com/857x1200/displate/2021-09-09/acaf2be9f58d1c05de9e4e47c580ee00_0da6a981d11a923cf24cf3f465fa81cc.jpg)',
+                    backgroundImage: 'none',
                     backgroundRepeat: 'no-repeat',
-                    backgroundColor: (t) =>
-                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                    backgroundColor: 'var(--spotify-card)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                }}
+                        backgroundImage: 'url(https://preview.redd.it/i-made-a-set-of-totoro-wallpaper-for-pc-and-mobile-phone-v0-aqhyo4zoqiqb1.jpg?width=4000&format=pjpg&auto=webp&s=529ce3d113d751095d7670e770b4bbdc2feadb3e)',
+                    backgroundRepeat: 'no-repeat',
+                    display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+                    }}
             />
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ backgroundColor: 'var(--spotify-card)', color: 'white' }}>
                 <Box
                     sx={{
                         my: 8,
@@ -59,10 +63,11 @@ export default function LoginScreen() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon/>
+                    <Avatar sx={{ m: 1, bgcolor: 'var(--spotify-green)' }}>
+                        <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
@@ -92,13 +97,14 @@ export default function LoginScreen() {
                             type="submit"
                             fullWidth
                             variant="contained"
+                            color="primary"
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign In
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <Link href="/register/" variant="body2">
+                                <Link href="/register/" variant="body2" sx={{ color: 'var(--spotify-green)' }}>
                                     Don't have an account? Sign Up
                                 </Link>
                             </Grid>
@@ -107,7 +113,7 @@ export default function LoginScreen() {
                     </Box>
                 </Box>
             </Grid>
-            { modalJSX }
+            {modalJSX}
         </Grid>
     );
 }
