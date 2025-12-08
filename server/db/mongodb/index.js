@@ -173,9 +173,13 @@ class MongoDBManager extends DatabaseManager {
             console.log("find user with id " + userID);
             const user = await User.findOne({ _id: userID })
 
-            console.log("find all Playlists owned by " + user.email);
+            const hasSearchQuery = query.name || query.user || query.songTitle || query.songArtist || query.songYear;
 
-            let filter = { ownerEmail: user.email }
+            // If no search query, show only user's playlists. Otherwise, search all playlists.
+            let filter = {};
+            if (!hasSearchQuery) {
+                filter = { ownerEmail: user.email };
+            }
 
             //build our filter. use regex and make case insensitive to find close matches
             if (query.name) {
