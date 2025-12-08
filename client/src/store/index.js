@@ -46,6 +46,7 @@ const CurrentModal = {
     PLAY_PLAYLIST: "PLAY_PLAYLIST",
     ADD_SONG: "ADD_SONG",
     ERROR: "ERROR",
+    REMOVE_SONG: "REMOVE_SONG",
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -468,6 +469,20 @@ function GlobalStoreContextProvider(props) {
                 listMarkedForDeletion: null
             });
         }
+    }
+
+    store.showRemoveSongModal = (song) => {
+        setStore({
+            currentModal: CurrentModal.REMOVE_SONG,
+            idNamePairs: store.idNamePairs,
+            currentList: store.currentList,
+            currentSongIndex: -1,
+            currentSong: song,
+            newListCounter: store.newListCounter,
+            listNameActive: false,
+            listIdMarkedForDeletion: null,
+            listMarkedForDeletion: null
+        });
     }
 
     store.showPlayPlaylistModal = function (playlistId) {

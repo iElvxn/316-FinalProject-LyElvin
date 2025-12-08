@@ -258,6 +258,20 @@ updateSong = async (req, res) => {
     }
 }
 
+deleteSong = async (req, res) => {
+    if (auth.verifyUser(req) === null) {
+        return res.status(400).json({ errorMessage: 'UNAUTHORIZED' });
+    }
+    const { id } = req.params;
+    try {
+        const user = await DatabaseManager.getUserById(req.userId);
+        await DatabaseManager.deleteSong(id, user.email);
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        return res.status(400).json({ errorMessage: error.message });
+    }
+}
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
@@ -271,5 +285,6 @@ module.exports = {
     getUserPlaylists,
     incrementSongListenCount,
     createSong,
-    updateSong
+    updateSong,
+    deleteSong
 }

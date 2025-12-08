@@ -117,6 +117,12 @@ export const updateSong = (songId, title, artist, year, youTubeId) => {
     });
 }
 
+export const deleteSong = (songId) => {
+    return fetchRequest(`/song/${songId}`, {
+        method: 'DELETE'
+    });
+}
+
 const apis = {
     createPlaylist,
     deletePlaylistById,

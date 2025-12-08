@@ -503,6 +503,31 @@ class MongoDBManager extends DatabaseManager {
             throw error
         }
     }
+    async deleteSong(songId, userEmail) {
+        try {
+            const song = await Song.findById(songId);
+
+            // Check if its by the user
+            if (song.addedBy != userEmail) {
+                throw new Error('Not authorized to delete this song');
+            }
+
+            // Remove the song from all playlists
+            await Playlist.updateMany(
+                { 'songs.title': song.title, 'songs.artist': song.artist, 'songs.year': song.year },
+                { $pull: { songs: { title: song.title, artist: song.artist, year: song.year } } }
+            )
+
+            // delete the song from catalog
+            await Song.findByIdAndDelete(songId);
+
+            return { success: true };
+
+        } catch (error) {
+            console.error('Error deleting song:', error);
+            throw error;
+        }
+    }
 }
 const dbManager = new MongoDBManager();
 module.exports = dbManager;

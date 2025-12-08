@@ -15,6 +15,7 @@ import { getSongs, getUserPlaylists, addSongToPlaylist } from '../store/requests
 import MUIAddSongModal from './MUIAddSongModal';
 import MUIEditSongModal from './MUIEditSongModal';
 import GlobalStoreContext from '../store';
+import MUIDeleteSongModal from './MUIDeleteSongModal ';
 
 const SongCatalogScreen = () => {
     const { store } = useContext(GlobalStoreContext);
@@ -110,6 +111,11 @@ const SongCatalogScreen = () => {
         setAnchorEl(null);
     }
 
+    function handleRemoveSong() {
+        handleMenuClose();
+        store.showRemoveSongModal(selectedSong);
+    }
+
     return (
         <div id="playlist-selector">
             <div id="list-selector-heading">
@@ -187,6 +193,7 @@ const SongCatalogScreen = () => {
                             </MenuItem>
                         ))}
                         <MenuItem onClick={handleEditSong}>Edit Song</MenuItem>
+                        <MenuItem onClick={handleRemoveSong}>Remove from Catalog</MenuItem>
 
                     </Menu>
                 </Box>
@@ -194,6 +201,7 @@ const SongCatalogScreen = () => {
 
             <MUIAddSongModal onSongCreated={handleSongCreated} />
             <MUIEditSongModal onSongUpdated={handleSongCreated} />
+            <MUIDeleteSongModal onSongDeleted={handleSongCreated} />
         </div>
     );
 };
