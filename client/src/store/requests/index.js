@@ -26,8 +26,7 @@ const fetchRequest = async (endpoint, options = {}) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || `HTTP error status: ${response.status}`);
+        throw new Error(data.errorMessage || `HTTP error status: ${response.status}`);
     }
 
     return { data, status: response.status };

@@ -286,23 +286,36 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
-        let newListName = "Untitled" + store.newListCounter;
+        // get a unique name by checking our existing playlists
+        const pairsResponse = await storeRequestSender.getPlaylistPairs();
+        let playlistNames = [];
+        if (pairsResponse.data.success) {
+            playlistNames = pairsResponse.data.idNamePairs.map(pair => pair.name);
+        }
+
+        let counter = 0;
+        let newListName = "Untitled" + counter;
+        while (playlistNames.includes(newListName)) {
+            counter++;
+            newListName = "Untitled" + counter;
+        }
+
         const response = await storeRequestSender.createPlaylist(newListName, [], auth.user.email, auth.user.userName);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
             let newList = response.data.playlist;
 
-            const pairsResponse = await storeRequestSender.getPlaylistPairs();
-            if (pairsResponse.data.success) {
-                let pairsArray = pairsResponse.data.idNamePairs;
+            const updatedPairsResponse = await storeRequestSender.getPlaylistPairs();
+            if (updatedPairsResponse.data.success) {
+                let pairsArray = updatedPairsResponse.data.idNamePairs;
                 setStore({
                     currentModal: CurrentModal.EDIT_PLAYLIST,
                     idNamePairs: pairsArray,
                     currentList: newList,
                     currentSongIndex: -1,
                     currentSong: null,
-                    newListCounter: store.newListCounter + 1,
+                    newListCounter: counter + 1,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null
@@ -383,7 +396,8 @@ function GlobalStoreContextProvider(props) {
             await storeRequestSender.createPlaylist(
                 copyName,
                 songsCopy,
-                auth.user.email
+                auth.user.email,
+                auth.user.userName
             );
             store.loadIdNamePairs();
 
@@ -676,18 +690,27 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.changePlaylistName = function (newName) {
+        const oldName = store.currentList.name;
         store.currentList.name = newName;
-        store.updateCurrentList();
+        store.updateCurrentList(oldName);
     }
 
-    store.updateCurrentList = function () {
+    store.updateCurrentList = function (oldName = null) {
         async function asyncUpdateCurrentList() {
-            const response = await storeRequestSender.updatePlaylistById(store.currentList._id, store.currentList);
-            if (response.data.success) {
-                storeReducer({
-                    type: GlobalStoreActionType.SET_CURRENT_LIST,
-                    payload: store.currentList
-                });
+            try {
+                const response = await storeRequestSender.updatePlaylistById(store.currentList._id, store.currentList);
+                if (response.data.success) {
+                    storeReducer({
+                        type: GlobalStoreActionType.SET_CURRENT_LIST,
+                        payload: store.currentList
+                    });
+                }
+            } catch (error) {
+                // Revert the name if we have an old name to restore
+                if (oldName !== null) {
+                    store.currentList.name = oldName;
+                }
+                alert(error.message);
             }
         }
         asyncUpdateCurrentList();

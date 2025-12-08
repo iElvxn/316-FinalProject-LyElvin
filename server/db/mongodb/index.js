@@ -73,13 +73,25 @@ class MongoDBManager extends DatabaseManager {
 
     async createPlaylist(playlistData, userID) {
         try {
+            const user = await this.User.findOne({ _id: userID })
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            // Check if a playlist with the same name already exists for this user
+            const existingPlaylist = await Playlist.findOne({
+                name: playlistData.name,
+                ownerEmail: user.email
+            });
+            if (existingPlaylist) {
+                throw new Error('A playlist with this name already exists');
+            }
+
             const playlist = new Playlist(playlistData);
             console.log("playlist: " + playlist.toString());
             if (!playlist) {
                 return null;
             }
-
-            const user = await this.User.findOne({ _id: userID })
 
             console.log("user found: " + JSON.stringify(user));
             user.playlists.push(playlist._id);
@@ -237,6 +249,18 @@ class MongoDBManager extends DatabaseManager {
             if (user._id.toString() == userID.toString()) {
                 console.log("correct user!");
                 console.log("updateData.name: " + updateData.name);
+
+                //check if name is uniqe
+                if (updateData.name && updateData.name !== playlist.name) {
+                    const existingPlaylist = await Playlist.findOne({
+                        name: updateData.name,
+                        ownerEmail: playlist.ownerEmail,
+                        _id: { $ne: playlistID } //excldues our own playlist id
+                    });
+                    if (existingPlaylist) {
+                        throw new Error('A playlist with this name already exists');
+                    }
+                }
 
                 // decrement playlistCount for removed songs
                 const oldSongs = playlist.songs;
@@ -411,7 +435,7 @@ class MongoDBManager extends DatabaseManager {
             throw new Error('User not found');
         }
         const playlists = await Playlist.find({ ownerEmail: user.email })
-            .select('_id name'); //we only need id and playlist name
+            .select('_id name'); // we only need id and playlist name
 
         return playlists.map(playlist => ({ _id: playlist._id, name: playlist.name }));
     }

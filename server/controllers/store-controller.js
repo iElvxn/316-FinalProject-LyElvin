@@ -28,6 +28,11 @@ createPlaylist = async (req, res) => {
             playlist: playlist
         })
     } catch (error) {
+        if (error.message === 'A playlist with this name already exists') {
+            return res.status(400).json({
+                errorMessage: 'A playlist with this name already exists'
+            })
+        }
         return res.status(400).json({
             errorMessage: 'Playlist Not Created!'
         })
@@ -134,9 +139,13 @@ updatePlaylist = async (req, res) => {
             message: 'Playlist updated!',
         })
     } catch (error) {
+        if (error.message === 'A playlist with this name already exists') {
+            return res.status(400).json({
+                errorMessage: 'A playlist with this name already exists'
+            })
+        }
         return res.status(404).json({
-            error,
-            message: 'Playlist not updated!',
+            errorMessage: 'Playlist not updated!'
         })
     }
 
