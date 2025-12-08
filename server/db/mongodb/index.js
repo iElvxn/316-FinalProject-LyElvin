@@ -447,6 +447,10 @@ class MongoDBManager extends DatabaseManager {
                 throw new Error('Song not found');
             }
 
+            const oldTitle = song.title;
+            const oldArtist = song.artist;
+            const oldYear = song.year;
+
             if (song.addedBy == userEmail) { //only the owner of the song can edit it
                 song.title = updateData.title;
                 song.artist = updateData.artist;
@@ -454,6 +458,19 @@ class MongoDBManager extends DatabaseManager {
                 song.youTubeId = updateData.youTubeId;
 
                 await song.save();
+
+                await Playlist.updateMany(
+                    { 'songs.title': oldTitle, 'songs.artist': oldArtist, 'songs.year': oldYear },
+                    {
+                        $set: {
+                            'songs.$[song].title': updateData.title,
+                            'songs.$[song].artist': updateData.artist,
+                            'songs.$[song].year': updateData.year,
+                            'songs.$[song].youTubeId': updateData.youTubeId
+                        }
+                    },
+                    { arrayFilters: [{ 'song.title': oldTitle, 'song.artist': oldArtist, 'song.year': oldYear }] }
+                );
                 return song.toObject()
             }
         } catch (error) {
