@@ -206,7 +206,7 @@ const SongCatalogScreen = () => {
                         </Select>
                     </FormControl>
 
-                    <List sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <List sx={{ width: '100%', maxHeight: 'calc(100vh - 250px)', overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         {songs.map((song) => (
                             <ListItem
                                 key={song._id}
