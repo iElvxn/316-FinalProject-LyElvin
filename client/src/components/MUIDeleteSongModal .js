@@ -14,7 +14,7 @@ const style1 = {
     transform: 'translate(-50%, -50%)',
     width: 345,
     height: 150,
-    backgroundColor: 'white',
+    backgroundColor: 'var(--spotify-card)',
     border: '3px solid #000',
     padding: '20px',
     boxShadow: 24,
@@ -44,16 +44,16 @@ export default function MUIDeleteSongModal({ onSongDeleted }) {
     return (
         <Modal open={store.currentModal === "REMOVE_SONG"}>
             <Box sx={style1}>
-                <Typography sx={{ fontWeight: 'bold' }} variant="h4" component="h2">
+                <Typography sx={{ color: "var(--spotify-white)", fontWeight: 'bold' }} variant="h4" component="h2">
                     Remove Song
                 </Typography>
                 <Divider sx={{ borderBottomWidth: 5, p: '5px', transform: 'translate(-5.5%, 0%)', width: 377 }} />
 
-                <Typography id="modal-modal-description" variant="h6" sx={{ color: "#301974", fontWeight: 'bold', mt: 1 }}>
-                    Are you sure you want to delete the <Typography display="inline" id="modal-modal-description" variant="h6" sx={{ color: "#820747CF", fontWeight: 'bold', mt: 2, textDecoration: 'underline' }}>{songTitle}</Typography> playlist?
+                <Typography id="modal-modal-description" variant="h6" sx={{ color: "var(--spotify-light-gray)", fontWeight: 'bold', mt: 1 }}>
+                    Are you sure you want to delete the <Typography display="inline" id="modal-modal-description" variant="h6" sx={{ color: "var(--spotify-green)", fontWeight: 'bold', mt: 2, textDecoration: 'underline' }}>{songTitle}</Typography> playlist?
                 </Typography>
-                <Button sx={{ opacity: 0.7, color: "#8932CC", backgroundColor: "#CBC3E3", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "60px", mr: "95px" }} variant="outlined" onClick={handleDeleteSong}> Confirm </Button>
-                <Button sx={{ opacity: 0.50, color: "#8932CC", backgroundColor: "#CBC3E3", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "60px", ml: "102px" }} variant="outlined" onClick={handleCancel}> Cancel </Button>
+                <Button sx={{ opacity: 0.7, color: "var(--spotify-white)", backgroundColor: "var(--spotify-green)", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "60px", mr: "95px" }} variant="outlined" onClick={handleDeleteSong}> Confirm </Button>
+                <Button sx={{ opacity: 0.50, color: "var(--spotify-light-gray)", backgroundColor: "transparent", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "60px", ml: "102px" }} variant="outlined" onClick={handleCancel}> Cancel </Button>
             </Box>
         </Modal>
     );

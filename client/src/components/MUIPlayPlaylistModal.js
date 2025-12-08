@@ -32,7 +32,9 @@ const style1 = {
     border: '3px solid #000',
     padding: '20px',
     boxShadow: 24,
-    bgcolor: 'background.paper'
+    bgcolor: 'var(--spotify-card)',
+    color: 'white',
+    borderRadius: 8,
 };
 
 // The playlist screeb but moidal edition
@@ -108,30 +110,30 @@ export default function MUIPlayPlaylistModal() {
             <Box sx={style1}>
                 <div id="edit-song-modal" data-animation="slideInOutLeft">
                     <Typography
-                        sx={{ fontWeight: 'bold' }}
+                        sx={{ fontWeight: 700, color: 'var(--spotify-white)' }}
                         id="edit-song-modal-title" variant="h4" component="h2">
                         Play Playlist
                     </Typography>
-                    <Divider sx={{ borderBottomWidth: 5, p: '5px', transform: 'translate(-5.5%, 0%)', width: 377 }} />
+                    <Divider sx={{ borderColor: 'var(--spotify-green)', borderBottomWidth: 5, p: '5px', transform: 'translate(-5.5%, 0%)', width: 377 }} />
 
                     <Box>
-                        <Typography sx={{ fontWeight: 'bold', mb: 2, fontSize: '24px' }}>
+                        <Typography sx={{ fontWeight: 700, mb: 2, fontSize: '24px', color: 'var(--spotify-white)' }}>
                             {store.currentList.name}
                         </Typography>
-                        <Typography sx={{ fontWeight: 'bold', mb: 2, fontSize: '16px' }}>
+                        <Typography sx={{ fontWeight: 600, mb: 2, fontSize: '16px', color: 'var(--spotify-light-gray)' }}>
                             by: {store.currentList.ownerUsername}
                         </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <List
                             sx={{
-                                overflow: 'auto',
-                                maxHeight: 600,
-                                width: '50%',
-                                bgcolor: '#8000F00F',
-                                borderRadius: 2,
-                                p: 1
-                            }}
+                                    overflow: 'auto',
+                                    maxHeight: 600,
+                                    width: '50%',
+                                    bgcolor: 'transparent',
+                                    borderRadius: 2,
+                                    p: 1
+                                }}
                         >
                             {store.currentList?.songs.map((song, index) => (
 
@@ -141,7 +143,7 @@ export default function MUIPlayPlaylistModal() {
                                     className={cardClass}
                                 >
                                     {index + 1}.
-                                    <Typography id={'song-' + index + '-link'} className="song-link">
+                                    <Typography id={'song-' + index + '-link'} className="song-link" sx={{ color: 'var(--spotify-light-gray)', ml: 1 }}>
                                         {song.title} ({song.year}) by {song.artist}
                                     </Typography>
 
@@ -168,16 +170,16 @@ export default function MUIPlayPlaylistModal() {
 
 
                             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 2 }}>
-                                <IconButton onClick={handlePlayPrevious}>
+                                <IconButton onClick={handlePlayPrevious} sx={{ color: 'var(--spotify-white)' }}>
                                     <SkipPreviousIcon sx={{ fontSize: 40 }} />
                                 </IconButton>
-                                <IconButton onClick={handlePause}>
+                                <IconButton onClick={handlePause} sx={{ color: 'var(--spotify-white)' }}>
                                     {isPlaying ?
                                         <PauseIcon sx={{ fontSize: 40 }} /> :
                                         <PlayArrowIcon sx={{ fontSize: 40 }} />
                                     }
                                 </IconButton>
-                                <IconButton onClick={handlePlayNext}>
+                                <IconButton onClick={handlePlayNext} sx={{ color: 'var(--spotify-white)' }}>
                                     <SkipNextIcon sx={{ fontSize: 40 }} />
                                 </IconButton>
                                 <FormControlLabel
@@ -192,9 +194,16 @@ export default function MUIPlayPlaylistModal() {
                             </Box>
                         </Box>
                     </Box>
-                    <Button
-                        sx={{ color: "#8932CC", backgroundColor: "#CBC3E3", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "20px" }} variant="outlined"
-                        id="edit-playlist-confirm-button" onClick={handleClose}>Close</Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                        <Button
+                            id="edit-playlist-confirm-button"
+                            onClick={handleClose}
+                            variant="contained"
+                            sx={{ backgroundColor: 'var(--spotify-green)', color: 'white', fontWeight: 600 }}
+                        >
+                            Close
+                        </Button>
+                    </Box>
 
                 </div>
             </Box>

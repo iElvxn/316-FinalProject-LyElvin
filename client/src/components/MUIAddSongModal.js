@@ -14,8 +14,8 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    border: '3px solid #000',
-    backgroundColor: 'white',
+    border: '3px solid rgba(255,255,255,0.06)',
+    backgroundColor: 'var(--spotify-card)',
     padding: '20px',
     boxShadow: 24,
 };
@@ -65,37 +65,37 @@ export default function MUIAddSongModal({ onSongCreated }) {
             <Box sx={style}>
                 <div id="edit-song-modal" data-animation="slideInOutLeft">
                     <Typography
-                        sx={{ fontWeight: 'bold' }}
+                        sx={{ fontWeight: 'bold', color: 'white' }}
                         id="edit-song-modal-title" variant="h4" component="h2">
                         Add Song
                     </Typography>
                     <Divider sx={{ borderBottomWidth: 5, p: '5px', transform: 'translate(-5.5%, 0%)', width: 377 }} />
                     <Typography
-                        sx={{ mt: "10px", color: "#702963", fontWeight: "bold", fontSize: "30px" }}
+                        sx={{ mt: "10px", color: "var(--spotify-white)", fontWeight: "bold", fontSize: "30px" }}
                         id="modal-modal-title" variant="h6" component="h2">
                         Title: <input id="edit-song-modal-title-textfield" className='modal-textfield' type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
                     </Typography>
                     <Typography
-                        sx={{ color: "#702963", fontWeight: "bold", fontSize: "30px" }}
+                        sx={{ color: "var(--spotify-white)", fontWeight: "bold", fontSize: "30px" }}
                         id="modal-modal-artist" variant="h6" component="h2">
                         Artist: <input id="edit-song-modal-artist-textfield" className='modal-textfield' type="text" value={artist} onChange={(e) => setArtist(e.target.value)} />
                     </Typography>
                     <Typography
-                        sx={{ color: "#702963", fontWeight: "bold", fontSize: "30px" }}
+                        sx={{ color: "var(--spotify-white)", fontWeight: "bold", fontSize: "30px" }}
                         id="modal-modal-year" variant="h6" component="h2">
                         Year: <input id="edit-song-modal-year-textfield" className='modal-textfield' type="text" value={year} onChange={(e) => setYear(e.target.value)} />
                     </Typography>
                     <Typography
-                        sx={{ color: "#702963", fontWeight: "bold", fontSize: "25px" }}
+                        sx={{ color: "var(--spotify-white)", fontWeight: "bold", fontSize: "25px" }}
                         id="modal-modal-youTubeId" variant="h6" component="h2">
                         YouTubeId: <input id="edit-song-modal-youTubeId-textfield" className='modal-textfield' type="text" value={youTubeId} onChange={(e) => setYouTubeId(e.target.value)} />
                     </Typography>
                     <Button
                         disabled={!isFormValid}
-                        sx={{ color: "#8932CC", backgroundColor: "#CBC3E3", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "20px" }} variant="outlined"
+                        sx={{ color: "var(--spotify-white)", backgroundColor: "var(--spotify-green)", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "20px" }} variant="outlined"
                         id="edit-song-confirm-button" onClick={handleConfirm}>Confirm</Button>
                     <Button
-                        sx={{ opacity: 0.80, color: "#8932CC", backgroundColor: "#CBC3E3", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "20px", ml: "197px" }} variant="outlined"
+                        sx={{ opacity: 0.80, color: "var(--spotify-light-gray)", backgroundColor: "transparent", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "20px", ml: "197px" }} variant="outlined"
                         id="edit-song-cancel-button" onClick={handleCancel}>Cancel</Button>
                 </div>
             </Box>

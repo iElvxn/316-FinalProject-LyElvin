@@ -21,10 +21,11 @@ const style1 = {
     transform: 'translate(-50%, -50%)',
     width: 1000,
     height: 600,
-    border: '3px solid #000',
     padding: '20px',
     boxShadow: 24,
-    bgcolor: 'background.paper'
+    bgcolor: 'var(--spotify-card)',
+    color: 'white',
+    borderRadius: '8px',
 };
 
 // The playlist screeb but moidal edition
@@ -74,34 +75,52 @@ export default function MUIEditPlaylistModal() {
             <Box sx={style1}>
                 <div id="edit-song-modal" data-animation="slideInOutLeft">
                     <Typography
-                        sx={{ fontWeight: 'bold' }}
-                        id="edit-song-modal-title" variant="h4" component="h2">
+                        sx={{ fontWeight: 700, color: 'var(--spotify-white)' }}
+                        id="edit-song-modal-title" variant="h5" component="h2">
                         Edit Playlist
                     </Typography>
-                    <Divider sx={{ borderBottomWidth: 5, p: '5px', transform: 'translate(-5.5%, 0%)', width: 377 }} />
-                    <Typography
-                        sx={{ mt: "10px", color: "#702963", fontWeight: "bold", fontSize: "30px" }}
-                        id="modal-modal-title" variant="h6" component="h2">
-                        Playlist Name: <input id="edit-song-modal-title-textfield" className='modal-textfield' type="text" value={playlistName} onChange={handleNameChange} onBlur={handleNameBlur} />
-                    </Typography>
+                    <Divider sx={{ borderBottomWidth: 3, borderColor: 'var(--spotify-green)', my: 1, width: '40px' }} />
+                    <Box sx={{ mt: 1, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography sx={{ color: 'var(--spotify-light-gray)', fontWeight: 600 }}>Playlist Name:</Typography>
+                        <input
+                            id="edit-song-modal-title-textfield"
+                            className='modal-textfield'
+                            type="text"
+                            value={playlistName}
+                            onChange={handleNameChange}
+                            onBlur={handleNameBlur}
+                            style={{
+                                background: 'transparent',
+                                border: '1px solid var(--spotify-gray)',
+                                color: 'white',
+                                padding: '6px 8px',
+                                borderRadius: 4,
+                                minWidth: 200
+                            }}
+                        />
+                    </Box>
                     <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
                         {!auth.isGuest && (
                             <>
                                 <Button
                                     onClick={handleAddSong}
                                     disabled={!store.canAddNewSong()}
+                                    variant="contained"
+                                    color="primary"
                                 >
                                     Add Song
                                 </Button>
                                 <IconButton
                                     onClick={handleUndo}
                                     disabled={!store.canUndo()}
+                                    sx={{ color: 'var(--spotify-light-gray)' }}
                                 >
                                     <UndoIcon />
                                 </IconButton>
                                 <IconButton
                                     onClick={handleRedo}
                                     disabled={!store.canRedo()}
+                                    sx={{ color: 'var(--spotify-light-gray)' }}
                                 >
                                     <RedoIcon />
                                 </IconButton>
@@ -112,7 +131,7 @@ export default function MUIEditPlaylistModal() {
                         sx={{
                             overflow: 'auto',
                             maxHeight: 350,
-                            bgcolor: '#8000F00F',
+                            bgcolor: 'transparent',
                             borderRadius: 2,
                             p: 1
                         }}
@@ -126,9 +145,16 @@ export default function MUIEditPlaylistModal() {
                             />
                         ))}
                     </List>
-                    <Button
-                        sx={{ color: "#8932CC", backgroundColor: "#CBC3E3", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "20px" }} variant="outlined"
-                        id="edit-playlist-confirm-button" onClick={handleClose}>Close</Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                        <Button
+                            id="edit-playlist-confirm-button"
+                            onClick={handleClose}
+                            variant="contained"
+                            sx={{ backgroundColor: 'var(--spotify-green)', color: 'white', fontWeight: 600 }}
+                        >
+                            Close
+                        </Button>
+                    </Box>
 
                 </div>
             </Box>
