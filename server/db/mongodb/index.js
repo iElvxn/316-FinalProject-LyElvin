@@ -198,9 +198,9 @@ class MongoDBManager extends DatabaseManager {
             const playlists = await Playlist.find(filter).sort(sortOption);
             console.log("found Playlists: " + JSON.stringify(playlists));
 
-            if (!playlists) {
+            if (!playlists || !playlists.length) {
                 console.log("!playlists.length");
-                return { success: false, error: 'Playlists not found' }
+                return []
             }
             else {
                 console.log("Send the Playlist pairs");
@@ -302,7 +302,7 @@ class MongoDBManager extends DatabaseManager {
 
         const playlists = await Playlist.find(filter).sort(sortOption)
         if (!playlists.length) {
-            return { success: false, error: `Playlists not found` }
+            return []
         }
         return playlists.map(playlist => playlist.toObject())
     }

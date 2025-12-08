@@ -11,7 +11,9 @@ import InputLabel from '@mui/material/InputLabel';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { getSongs, getUserPlaylists, addSongToPlaylist } from '../store/requests';
+import Typography from '@mui/material/Typography';
+import YouTube from 'react-youtube';
+import { getSongs, getUserPlaylists, addSongToPlaylist, incrementSongListenCount } from '../store/requests';
 import MUIAddSongModal from './MUIAddSongModal';
 import MUIEditSongModal from './MUIEditSongModal';
 import GlobalStoreContext from '../store';
@@ -133,6 +135,17 @@ const SongCatalogScreen = () => {
         store.showRemoveSongModal(selectedSong);
     }
 
+    function handleSongClick(song) {
+        setSelectedSong(song);
+        incrementSongListenCount(song.title, song.artist, song.year);
+    }
+
+    const playerOptions = {
+        playerVars: { autoplay: 1 },
+        height: '300',
+        width: '400',
+    };
+
     return (
         <div id="playlist-selector">
             <div id="list-selector-heading">
@@ -140,15 +153,33 @@ const SongCatalogScreen = () => {
             </div>
 
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, height: '100%' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', width: "30%" }}>
-                    <TextField label="by Title" size="small" value={searchQuery.title}
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: "30%", gap: 1, alignItems: 'center' }}>
+                    <TextField label="by Title" size="small" fullWidth value={searchQuery.title}
                         onChange={handleQueryChange('title')} onKeyDown={handleKeyPress} />
-                    <TextField label="by Artist" size="small" value={searchQuery.artist}
+                    <TextField label="by Artist" size="small" fullWidth value={searchQuery.artist}
                         onChange={handleQueryChange('artist')} onKeyDown={handleKeyPress} />
-                    <TextField label="by Year" size="small" value={searchQuery.year}
+                    <TextField label="by Year" size="small" fullWidth value={searchQuery.year}
                         onChange={handleQueryChange('year')} onKeyDown={handleKeyPress} />
-                    <Button variant="contained" onClick={handleSearch}>Search</Button>
-                    <Button variant="outlined" onClick={handleClear}>Clear</Button>
+                    <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
+                        <Button variant="contained" fullWidth onClick={handleSearch}>Search</Button>
+                        <Button variant="outlined" fullWidth onClick={handleClear}>Clear</Button>
+                    </Box>
+
+                    {selectedSong && (
+                        <Box sx={{ mt: 2, p: 1, bgcolor: 'white', borderRadius: 2, textAlign: 'center' }}>
+                            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>
+                                Now Playing:
+                            </Typography>
+                            <Typography sx={{ mb: 1 }}>
+                                {selectedSong.title} by {selectedSong.artist}
+                            </Typography>
+                            <YouTube
+                                videoId={selectedSong.youTubeId}
+                                opts={playerOptions}
+                            />
+                        </Box>
+                    )}
+
                     {auth.user && <Button
                         variant="contained"
                         color="success"
@@ -179,7 +210,16 @@ const SongCatalogScreen = () => {
                         {songs.map((song) => (
                             <ListItem
                                 key={song._id}
-                                sx={{ borderRadius: "25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex' }}
+                                onClick={() => handleSongClick(song)}
+                                sx={{
+                                    borderRadius: "25px",
+                                    p: "10px",
+                                    bgcolor: selectedSong?._id === song._id ? '#d4a5ff' : '#8000F00F',
+                                    marginTop: '15px',
+                                    display: 'flex',
+                                    cursor: 'pointer',
+                                    '&:hover': { bgcolor: '#d4a5ff' }
+                                }}
                                 style={{ width: '98%', fontSize: '24pt' }}
                             >
                                 <Box sx={{ p: 1, flexGrow: 1 }}>
