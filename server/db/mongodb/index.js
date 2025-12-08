@@ -108,6 +108,12 @@ class MongoDBManager extends DatabaseManager {
 
             if (user._id.toString() === userID.toString()) {
                 console.log("correct user!");
+
+                // Decrement playlistCount for all songs in this playlist
+                for (const song of playlist.songs) {
+                    await this.decrementPlaylistCount(song.title, song.artist, song.year);
+                }
+
                 await Playlist.findOneAndDelete({ _id: playlistID });
                 return {};
             } else {
@@ -231,6 +237,18 @@ class MongoDBManager extends DatabaseManager {
             if (user._id.toString() == userID.toString()) {
                 console.log("correct user!");
                 console.log("updateData.name: " + updateData.name);
+
+                // decrement playlistCount for removed songs
+                const oldSongs = playlist.songs;
+                const newSongs = updateData.songs;
+                for (const oldSong of oldSongs) {
+                    const wasDeleted = !newSongs.some(
+                        song => song.title === oldSong.title && song.artist === oldSong.artist && song.year === oldSong.year
+                    );
+                    if (wasDeleted) {
+                        await this.decrementPlaylistCount(oldSong.title, oldSong.artist, oldSong.year);
+                    }
+                }
 
                 playlist.name = updateData.name;
                 playlist.songs = updateData.songs;
@@ -406,6 +424,13 @@ class MongoDBManager extends DatabaseManager {
             return song.toObject();
         }
         return null;
+    }
+
+    async decrementPlaylistCount(title, artist, year) {
+        await Song.updateOne(
+            { title, artist, year },
+            { $inc: { playlistCount: -1 } }
+        );
     }
 
     async createSong(songData, userEmail) {
