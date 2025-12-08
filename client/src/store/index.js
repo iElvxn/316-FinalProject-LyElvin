@@ -44,7 +44,8 @@ const CurrentModal = {
     EDIT_SONG: "EDIT_SONG",
     EDIT_PLAYLIST: "EDIT_PLAYLIST",
     PLAY_PLAYLIST: "PLAY_PLAYLIST",
-    ERROR: "ERROR"
+    ERROR: "ERROR",
+    ADD_SONG: "ADD_SONG"
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -418,6 +419,15 @@ function GlobalStoreContextProvider(props) {
     }
     store.isPlayPlaylistModalOpen = () => {
         return store.currentModal === CurrentModal.PLAY_PLAYLIST;
+    }
+    store.isAddSongModalOpen = () => {
+        return store.currentModal === CurrentModal.ADD_SONG;
+    }
+    store.showAddSongModal = () => {
+        setStore({
+            ...store,
+            currentModal: CurrentModal.ADD_SONG
+        });
     }
     store.showEditPlaylistModal = function (playlistId) {
         async function asyncShowEditPlaylistModal(playlistId) {

@@ -407,6 +407,38 @@ class MongoDBManager extends DatabaseManager {
         }
         return null;
     }
+
+    async createSong(songData, userEmail) {
+        try {
+            // Check if song already exists
+            const existingSong = await Song.findOne({
+                title: songData.title,
+                artist: songData.artist,
+                year: songData.year
+            });
+
+            if (existingSong) {
+                throw new Error('Song with this title, artist, and year already exists');
+            }
+
+            const newSong = new Song({
+                title: songData.title,
+                artist: songData.artist,
+                year: songData.year,
+                youTubeId: songData.youTubeId,
+                addedBy: userEmail,
+                listenCount: 0,
+                playlistCount: 0
+            });
+
+            await newSong.save();
+            return newSong.toObject();
+
+        } catch (error) {
+            console.error('Error creating song', error);
+            throw error;
+        }
+    }
 }
 const dbManager = new MongoDBManager();
 module.exports = dbManager;

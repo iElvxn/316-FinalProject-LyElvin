@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,8 +12,11 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { getSongs, getUserPlaylists, addSongToPlaylist } from '../store/requests';
+import MUIAddSongModal from './MUIAddSongModal';
+import GlobalStoreContext from '../store';
 
 const SongCatalogScreen = () => {
+    const { store } = useContext(GlobalStoreContext);
     const [songs, setSongs] = useState([]);
     const [searchQuery, setSearchQuery] = useState({
         title: '',
@@ -97,6 +100,10 @@ const SongCatalogScreen = () => {
         }
     }
 
+    function handleSongCreated() {
+        loadSongs(searchQuery, sortBy);
+    }
+
     return (
         <div id="playlist-selector">
             <div id="list-selector-heading">
@@ -113,6 +120,14 @@ const SongCatalogScreen = () => {
                         onChange={handleQueryChange('year')} onKeyDown={handleKeyPress} />
                     <Button variant="contained" onClick={handleSearch}>Search</Button>
                     <Button variant="outlined" onClick={handleClear}>Clear</Button>
+                    <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ mt: 2 }}
+                        onClick={() => store.showAddSongModal()}
+                    >
+                        Add New Song
+                    </Button>
                 </Box>
                 <Box sx={{ bgcolor: "background.paper", flexGrow: 1 }} id="list-selector-list">
                     <FormControl size="small" sx={{ mt: 1 }}>
@@ -168,6 +183,8 @@ const SongCatalogScreen = () => {
                     </Menu>
                 </Box>
             </Box>
+
+            <MUIAddSongModal onSongCreated={handleSongCreated} />
         </div>
     );
 };

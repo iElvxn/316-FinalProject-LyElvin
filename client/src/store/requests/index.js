@@ -103,6 +103,13 @@ export const incrementSongListenCount = (title, artist, year) => {
     });
 }
 
+export const createSong = (title, artist, year, youTubeId) => {
+    return fetchRequest('/song', {
+        method: 'POST',
+        body: JSON.stringify({ title, artist, year, youTubeId })
+    });
+}
+
 const apis = {
     createPlaylist,
     deletePlaylistById,

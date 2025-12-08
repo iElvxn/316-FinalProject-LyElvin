@@ -205,6 +205,36 @@ incrementSongListenCount = async (req, res) => {
     }
 }
 
+createSong = async (req, res) => {
+    if (auth.verifyUser(req) === null) {
+        return res.status(400).json({ errorMessage: 'UNAUTHORIZED' });
+    }
+
+    const { title, artist, year, youTubeId } = req.body
+
+    //make sure we have all the fields
+    if (!title || !artist || !year || !youTubeId) {
+        return res.status(400).json({
+            errorMessage: 'All fields are required'
+        });
+    }
+
+    try {
+        const user = await DatabaseManager.getUserById(req.userId);
+        const song = await DatabaseManager.createSong({ title, artist, year: parseInt(year), youTubeId }, user.email);
+
+        return res.status(200).json({
+            success: true,
+            song: song
+        });
+
+    } catch (error) {
+        return res.status(400).json({
+            errorMessage: error.message
+        });
+    }
+}
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
@@ -216,5 +246,6 @@ module.exports = {
     getSongs,
     addSongToPlaylist,
     getUserPlaylists,
-    incrementSongListenCount
+    incrementSongListenCount,
+    createSong
 }
