@@ -1,6 +1,8 @@
 import './App.css';
 import { React } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme';
 import { AuthContextProvider } from './auth';
 import { GlobalStoreContextProvider } from './store'
 import {
@@ -21,9 +23,10 @@ import {
 */
 const App = () => {   
     return (
-        <BrowserRouter>
-            <AuthContextProvider>
-                <GlobalStoreContextProvider>              
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <AuthContextProvider>
+                    <GlobalStoreContextProvider>
                     <AppBanner />
                     <Switch>
                         <Route path="/" exact component={HomeWrapper} />
@@ -34,9 +37,10 @@ const App = () => {
                         <Route path="/songs" exact component={SongCatalogScreen} />
                     </Switch>
                     <Statusbar />
-                </GlobalStoreContextProvider>
-            </AuthContextProvider>
-        </BrowserRouter>
+                    </GlobalStoreContextProvider>
+                </AuthContextProvider>
+            </BrowserRouter>
+        </ThemeProvider>
     )
 }
 

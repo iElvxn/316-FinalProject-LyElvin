@@ -108,7 +108,7 @@ export default function AppBanner() {
 
     return (
         <Box sx={{ flexGrow: 1, position: 'relative', zIndex: 1100 }}>
-            <AppBar position="static">
+            <AppBar position="static" sx={{ backgroundColor: 'var(--spotify-green)' }}>
                 <Toolbar>
                     <Typography
                         variant="h4"
