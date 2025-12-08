@@ -19,6 +19,7 @@ import YouTube from 'react-youtube';
 import { ListItem } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { incrementSongListenCount } from '../store/requests';
 
 
 const style1 = {
@@ -52,6 +53,10 @@ export default function MUIPlayPlaylistModal() {
     const onPlayerReady = (event) => {
         setPlayer(event.target);
         event.target.playVideo();
+        // Increment song listen count when song starts playing
+        if (currentSong) {
+            incrementSongListenCount(currentSong.title, currentSong.artist, currentSong.year);
+        }
     }
 
     const onPlayerEnd = () => {

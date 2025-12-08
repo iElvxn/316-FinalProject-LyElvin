@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import GlobalStoreContext from '../store';
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -31,6 +32,7 @@ export default function MUIEditPlaylistModal() {
     const { store } = useContext(GlobalStoreContext);
     const [playlistName, setPlaylistName] = useState(store.currentList?.name || '');
     const { auth } = useContext(AuthContext);
+    const history = useHistory();
 
     useEffect(() => { //this is for syncing the input and actual state of the playlist name
         if (store.currentList.name) {
@@ -53,7 +55,8 @@ export default function MUIEditPlaylistModal() {
     }
 
     const handleAddSong = () => {
-        store.addNewSong();
+        store.closeEditPlaylistModal();
+        history.push('/songs');
     }
 
     const handleUndo = () => {

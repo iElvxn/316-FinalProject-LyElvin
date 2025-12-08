@@ -397,6 +397,16 @@ class MongoDBManager extends DatabaseManager {
 
         return playlists.map(playlist => ({ _id: playlist._id, name: playlist.name }));
     }
+
+    async incrementSongListenCount(title, artist, year) {
+        const song = await Song.findOne({ title, artist, year });
+        if (song) {
+            song.listenCount = (song.listenCount || 0) + 1;
+            await song.save();
+            return song.toObject();
+        }
+        return null;
+    }
 }
 const dbManager = new MongoDBManager();
 module.exports = dbManager;

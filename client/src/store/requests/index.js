@@ -96,6 +96,13 @@ export const getUserPlaylists = () => {
     return fetchRequest('/user/playlists');
 }
 
+export const incrementSongListenCount = (title, artist, year) => {
+    return fetchRequest('/song/listen', {
+        method: 'POST',
+        body: JSON.stringify({ title, artist, year })
+    });
+}
+
 const apis = {
     createPlaylist,
     deletePlaylistById,

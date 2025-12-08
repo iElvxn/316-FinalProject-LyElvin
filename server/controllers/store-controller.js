@@ -194,6 +194,17 @@ getUserPlaylists = async (req, res) => {
     }
 }
 
+incrementSongListenCount = async (req, res) => {
+    const { title, artist, year } = req.body;
+
+    try {
+        const song = await DatabaseManager.incrementSongListenCount(title, artist, year);
+        return res.status(200).json({ success: true, song });
+    } catch (error) {
+        return res.status(400).json({ errorMessage: error.message });
+    }
+}
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
@@ -204,5 +215,6 @@ module.exports = {
     incrementListener,
     getSongs,
     addSongToPlaylist,
-    getUserPlaylists
+    getUserPlaylists,
+    incrementSongListenCount
 }
