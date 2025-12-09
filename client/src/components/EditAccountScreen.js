@@ -32,6 +32,15 @@ export default function EditAccountScreen() {
         }
     }, [auth.user]);
 
+    const hasChanges = () => {
+        if (!auth.user) return false;
+        if (userName.trim() === '') return false;
+        const userNameChanged = userName !== (auth.user.userName || '');
+        const avatarChanged = avatar !== (auth.user.avatar || '');
+        const passwordEntered = password !== '' || passwordVerify !== '';
+        return userNameChanged || avatarChanged || passwordEntered;
+    };
+
     const handleAvatarSubmit = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -139,6 +148,7 @@ export default function EditAccountScreen() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
+                                disabled={!hasChanges()}
                             >
                                 Complete
                             </Button>

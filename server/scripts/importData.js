@@ -18,7 +18,6 @@ async function importData() {
     try {
         // Connect to MongoDB
         await mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true });
-        console.log('Connected to MongoDB');
 
         // Read the JSON data
         const rawData = fs.readFileSync(dataPath, 'utf-8');
@@ -26,13 +25,13 @@ async function importData() {
 
         console.log(`Found ${data.users.length} users and ${data.playlists.length} playlists`);
 
-        // Clear existing data (optional - comment out if you want to keep existing data)
+        //Ckear our database
         await User.deleteMany({});
         await Playlist.deleteMany({});
         await Song.deleteMany({});
         console.log('Cleared existing data');
 
-        // Create users with hashed passwords
+        // Create users users with preset data
         const createdUsers = [];
         for (const userData of data.users) {
             const saltRounds = 10;
@@ -50,10 +49,10 @@ async function importData() {
         }
         console.log(`Created ${createdUsers.length} users`);
 
-        // Distribute playlists among users (round-robin)
+        // Append the playlists toaa their random yusers
         for (let i = 0; i < data.playlists.length; i++) {
             const playlistData = data.playlists[i];
-            const owner = createdUsers[i % createdUsers.length]; // Round-robin assignment
+            const owner = createdUsers[i % createdUsers.length]; 
 
             const playlist = new Playlist({
                 name: playlistData.name,
@@ -66,11 +65,9 @@ async function importData() {
 
             await playlist.save();
 
-            // Add playlist to user's playlists array
             owner.playlists.push(playlist._id);
             await owner.save();
         }
-        console.log(`Created ${data.playlists.length} playlists`);
 
         // Extract unique songs from all playlists and add to Song catalog
         const songMap = new Map(); // key: "title|artist|year", value: song data
@@ -103,7 +100,7 @@ async function importData() {
             playlistIndex++;
         }
 
-        // Save all unique songs to the catalog (limit to 50)
+        // Save all unique songs to the catalog. Limit at 50
         let songCount = 0;
         const maxSongs = 50;
         for (const songData of songMap.values()) {

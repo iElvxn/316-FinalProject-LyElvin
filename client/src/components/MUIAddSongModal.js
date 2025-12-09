@@ -49,6 +49,7 @@ export default function MUIAddSongModal({ onSongCreated }) {
                 }
             } catch (error) {
                 console.error('Error creating song:', error);
+                alert(error.message || 'Failed to create song');
             }
         }
     }
@@ -92,7 +93,16 @@ export default function MUIAddSongModal({ onSongCreated }) {
                     </Typography>
                     <Button
                         disabled={!isFormValid}
-                        sx={{ color: "var(--spotify-white)", backgroundColor: "var(--spotify-green)", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "20px" }} variant="outlined"
+                        sx={{
+                            color: "var(--spotify-white)",
+                            backgroundColor: isFormValid ? "var(--spotify-green)" : "gray",
+                            fontSize: 13,
+                            fontWeight: 'bold',
+                            border: 2,
+                            p: "5px",
+                            mt: "20px"
+                        }}
+                        variant="outlined"
                         id="edit-song-confirm-button" onClick={handleConfirm}>Confirm</Button>
                     <Button
                         sx={{ opacity: 0.80, color: "var(--spotify-light-gray)", backgroundColor: "transparent", fontSize: 13, fontWeight: 'bold', border: 2, p: "5px", mt: "20px", ml: "197px" }} variant="outlined"

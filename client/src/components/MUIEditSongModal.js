@@ -49,6 +49,7 @@ export default function MUIEditSongModal({ onSongUpdated }) {
             }
         } catch (error) {
             console.error('Error updating song:', error);
+            alert(error.message || 'Failed to update song');
         }
     }
 

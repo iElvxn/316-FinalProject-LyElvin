@@ -84,6 +84,7 @@ class MongoDBManager extends DatabaseManager {
                 ownerEmail: user.email
             });
             if (existingPlaylist) {
+                alert('A playlist with this name already exists');
                 throw new Error('A playlist with this name already exists');
             }
 
@@ -94,6 +95,13 @@ class MongoDBManager extends DatabaseManager {
             console.log("playlist: " + playlist.toString());
             if (!playlist) {
                 return null;
+            }
+
+            // Increment playlistCount for all songs in this playlist
+            if (playlistData.songs && playlistData.songs.length > 0) {
+                for (const song of playlistData.songs) {
+                    await this.incrementPlaylistCount(song.title, song.artist, song.year);
+                }
             }
 
             console.log("user found: " + JSON.stringify(user));
@@ -265,6 +273,7 @@ class MongoDBManager extends DatabaseManager {
                         _id: { $ne: playlistID } //excldues our own playlist id
                     });
                     if (existingPlaylist) {
+                        alert('A playlist with this name already exists');
                         throw new Error('A playlist with this name already exists');
                     }
                 }
@@ -464,6 +473,13 @@ class MongoDBManager extends DatabaseManager {
         );
     }
 
+    async incrementPlaylistCount(title, artist, year) {
+        await Song.updateOne(
+            { title, artist, year },
+            { $inc: { playlistCount: 1 } }
+        );
+    }
+
     async createSong(songData, userEmail) {
         try {
             // Check if song already exists
@@ -474,6 +490,7 @@ class MongoDBManager extends DatabaseManager {
             });
 
             if (existingSong) {
+                alert('A song with this title, artist, and year already exists');
                 throw new Error('Song with this title, artist, and year already exists');
             }
 
@@ -508,6 +525,18 @@ class MongoDBManager extends DatabaseManager {
             const oldYear = song.year;
 
             if (song.addedBy == userEmail) { //only the owner of the song can edit it
+                //make sure the song is unique after edit
+                const existingSong = await Song.findOne({
+                    title: updateData.title,
+                    artist: updateData.artist,
+                    year: updateData.year,
+                    _id: { $ne: songId } // exclude current song
+                });
+                if (existingSong) {
+                    alert("A song with this title, artist, and year already exists.");
+                    throw new Error('A song with this title, artist, and year already exists');
+                }
+
                 song.title = updateData.title;
                 song.artist = updateData.artist;
                 song.year = updateData.year;
