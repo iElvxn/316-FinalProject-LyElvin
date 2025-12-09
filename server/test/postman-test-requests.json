@@ -1,0 +1,617 @@
+{
+	"info": {
+		"_postman_id": "1bd307f6-eb32-4c8b-9b64-143fa3a9fd14",
+		"name": "Playlister Final Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49032035",
+		"_collection_link": "https://ielvxn-1879562.postman.co/workspace/Elvin-Ly's-Workspace~40bb27dc-5aac-4f81-8a0d-bda3b6dd5eb7/collection/49032035-1bd307f6-eb32-4c8b-9b64-143fa3a9fd14?action=share&source=collection_link&creator=49032035"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"TestUser\",\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"password123\",\r\n    \"passwordVerify\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged In User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/auth/loggedIn",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"auth",
+								"loggedIn"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"NewUsername\",\r\n    \"avatar\": \"somernadomavatar.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/auth/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"auth",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Playlist CRUD",
+			"item": [
+				{
+					"name": "Create Playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"My Test Playlist\",\r\n    \"songs\": [\r\n        {\r\n            \"title\": \"Bohemian Rhapsody\",\r\n            \"artist\": \"Queen\",\r\n            \"year\": 1975,\r\n            \"youTubeId\": \"fJ9rUzIMcZQ\"\r\n        },\r\n        {\r\n            \"title\": \"Hotel California\",\r\n            \"artist\": \"Eagles\",\r\n            \"year\": 1976,\r\n            \"youTubeId\": \"BciS5krYL80\"\r\n        }\r\n    ],\r\n    \"ownerEmail\": \"test@gmail.com\",\r\n    \"ownerUsername\": \"TestUser\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/store/playlist",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Playlist",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/playlist/693778d5097e004244bad2b0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlist",
+								"693778d5097e004244bad2b0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Playlist by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/playlist/693778d5097e004244bad2b0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlist",
+								"693778d5097e004244bad2b0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Playlist Pairs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/playlistpairs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlistpairs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Playlist Pairs - Search by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/playlistpairs?name=Test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlistpairs"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Playlist Pairs - Search by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/playlistpairs?user=TestUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlistpairs"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "TestUser"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Playlists",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:4000/store/playlists",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Playlist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"playlist\": {\r\n        \"name\": \"NewPlaylistName\",\r\n        \"songs\": [\r\n            {\r\n                \"title\": \"Bohemian Rhapsody\",\r\n                \"artist\": \"Queen\",\r\n                \"year\": 1975,\r\n                \"youTubeId\": \"fJ9rUzIMcZQ\"\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/store/playlist/693778d5097e004244bad2b0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlist",
+								"693778d5097e004244bad2b0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Increment Playlist Listener",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userEmail\": \"test@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/store/playlist/69377773097e004244bad276/listen",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"playlist",
+								"69377773097e004244bad276",
+								"listen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Playlists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/user/playlists",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"user",
+								"playlists"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Song CRUD",
+			"item": [
+				{
+					"name": "Get All Songs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/songs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"songs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Song to Playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"playlistId\": \"PLAYLIST_ID_HERE\",\r\n    \"songId\": \"SONG_ID_HERE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/store/song/add-to-playlist",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"song",
+								"add-to-playlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Songs - Artist FIlter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/songs?artist=Rick Astley",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"songs"
+							],
+							"query": [
+								{
+									"key": "artist",
+									"value": "Rick Astley"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Songs - Sort by Year Ascending",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/songs?sortBy=year-asc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"songs"
+							],
+							"query": [
+								{
+									"key": "sortBy",
+									"value": "year-asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Increment Song Listen Count",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Flash\",\r\n    \"artist\": \"2hollis\",\r\n    \"year\": 2025\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/store/song/listen",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"song",
+								"listen"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Song",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Flash\",\r\n    \"artist\": \"2hollis\",\r\n    \"year\": 2025,\r\n    \"youTubeId\": \"bLC2h0bUHfY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/store/song",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"song"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Song",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Updated Song\",\r\n    \"artist\": \"John Cena\",\r\n    \"year\": 2024,\r\n    \"youTubeId\": \"67676767\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/store/song/693779e00a848f34dc3dc007",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"song",
+								"693779e00a848f34dc3dc007"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Song",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/store/song/693779e00a848f34dc3dc007",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"store",
+								"song",
+								"693779e00a848f34dc3dc007"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

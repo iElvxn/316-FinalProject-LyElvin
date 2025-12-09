@@ -87,6 +87,9 @@ class MongoDBManager extends DatabaseManager {
                 throw new Error('A playlist with this name already exists');
             }
 
+            playlistData.ownerEmail = user.email;
+            playlistData.ownerUsername = user.userName;
+
             const playlist = new Playlist(playlistData);
             console.log("playlist: " + playlist.toString());
             if (!playlist) {
@@ -296,7 +299,7 @@ class MongoDBManager extends DatabaseManager {
         }
     }
 
-    async getPlaylists(query) {
+    async getPlaylists(query = {}) {
         let filter = {}
 
         //build our filter. use regex and make case insensitive to find close matches
