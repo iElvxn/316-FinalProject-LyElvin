@@ -177,7 +177,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4000/store/playlist/693778d5097e004244bad2b0",
+							"raw": "http://localhost:4000/store/playlist/6937a2732124622e902fcd90",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -186,7 +186,7 @@
 							"path": [
 								"store",
 								"playlist",
-								"693778d5097e004244bad2b0"
+								"6937a2732124622e902fcd90"
 							]
 						}
 					},
@@ -198,7 +198,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4000/store/playlist/693778d5097e004244bad2b0",
+							"raw": "http://localhost:4000/store/playlist/6937a2732124622e902fcd90",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -207,7 +207,7 @@
 							"path": [
 								"store",
 								"playlist",
-								"693778d5097e004244bad2b0"
+								"6937a2732124622e902fcd90"
 							]
 						}
 					},
@@ -327,7 +327,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4000/store/playlist/693778d5097e004244bad2b0",
+							"raw": "http://localhost:4000/store/playlist/6937a2732124622e902fcd90",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -336,7 +336,7 @@
 							"path": [
 								"store",
 								"playlist",
-								"693778d5097e004244bad2b0"
+								"6937a2732124622e902fcd90"
 							]
 						}
 					},
@@ -357,7 +357,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4000/store/playlist/69377773097e004244bad276/listen",
+							"raw": "http://localhost:4000/store/playlist/6937a2732124622e902fcd90/listen",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -366,7 +366,7 @@
 							"path": [
 								"store",
 								"playlist",
-								"69377773097e004244bad276",
+								"6937a2732124622e902fcd90",
 								"listen"
 							]
 						}
@@ -426,7 +426,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"playlistId\": \"PLAYLIST_ID_HERE\",\r\n    \"songId\": \"SONG_ID_HERE\"\r\n}",
+							"raw": "{\r\n    \"playlistId\": \"6937a2732124622e902fcd90\",\r\n    \"songId\": \"6937a2e42124622e902fcdb4\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -455,7 +455,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4000/store/songs?artist=Rick Astley",
+							"raw": "http://localhost:4000/store/songs?artist=2hollis",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -468,7 +468,7 @@
 							"query": [
 								{
 									"key": "artist",
-									"value": "Rick Astley"
+									"value": "2hollis"
 								}
 							]
 						}
@@ -575,7 +575,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4000/store/song/693779e00a848f34dc3dc007",
+							"raw": "http://localhost:4000/store/song/6937a2e42124622e902fcdb4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -584,7 +584,7 @@
 							"path": [
 								"store",
 								"song",
-								"693779e00a848f34dc3dc007"
+								"6937a2e42124622e902fcdb4"
 							]
 						}
 					},
@@ -596,7 +596,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4000/store/song/693779e00a848f34dc3dc007",
+							"raw": "http://localhost:4000/store/song/6937a2e42124622e902fcdb4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -605,7 +605,7 @@
 							"path": [
 								"store",
 								"song",
-								"693779e00a848f34dc3dc007"
+								"6937a2e42124622e902fcdb4"
 							]
 						}
 					},
